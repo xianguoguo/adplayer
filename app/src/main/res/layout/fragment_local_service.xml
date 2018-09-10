@@ -1,0 +1,85 @@
+<com.adshow.player.views.FocusPercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/playingFocusLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <Button
+        android:id="@+id/playList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/app_blue"
+        android:focusable="true"
+        android:scaleType="fitXY"
+        android:text="播放列表"
+        app:layout_heightPercent="25%"
+        app:layout_marginBottomPercent="5%"
+        app:layout_marginLeftPercent="15%"
+        app:layout_marginRightPercent="2.5%"
+        app:layout_marginTopPercent="10%"
+        app:layout_widthPercent="15%" />
+
+    <Button
+        android:id="@+id/downloadList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/playList"
+        android:background="@drawable/app_blue"
+        android:focusable="true"
+        android:scaleType="fitXY"
+        android:text="下载列表"
+        app:layout_heightPercent="25%"
+        app:layout_marginBottomPercent="30%"
+        app:layout_marginLeftPercent="15%"
+        app:layout_marginRightPercent="2.5%"
+        app:layout_marginTopPercent="5%"
+        app:layout_widthPercent="15%" />
+
+    <Button
+        android:id="@+id/play"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toRightOf="@id/playList"
+        android:background="@drawable/local_play_video"
+        android:focusable="true"
+        android:scaleType="fitXY"
+        app:layout_heightPercent="60%"
+        app:layout_marginBottomPercent="30%"
+        app:layout_marginLeftPercent="2.5%"
+        app:layout_marginRightPercent="2.5%"
+        app:layout_marginTopPercent="10%"
+        app:layout_widthPercent="30%"></Button>
+
+    <Button
+        android:id="@+id/statistics"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toRightOf="@id/play"
+        android:background="@drawable/app_blue"
+        android:scaleType="fitXY"
+        android:text="播放统计"
+        app:layout_heightPercent="25%"
+        app:layout_marginBottomPercent="5%"
+        app:layout_marginLeftPercent="2.5%"
+        app:layout_marginRightPercent="15%"
+        app:layout_marginTopPercent="10%"
+        app:layout_widthPercent="15%" />
+
+    <Button
+        android:id="@+id/notification"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/statistics"
+        android:layout_toRightOf="@id/play"
+        android:background="@drawable/app_blue"
+        android:scaleType="fitXY"
+        android:text="系统通知"
+        app:layout_heightPercent="25%"
+        app:layout_marginBottomPercent="30%"
+        app:layout_marginLeftPercent="2.5%"
+        app:layout_marginRightPercent="15%"
+        app:layout_marginTopPercent="5%"
+        app:layout_widthPercent="15%" />
+
+
+</com.adshow.player.views.FocusPercentRelativeLayout>

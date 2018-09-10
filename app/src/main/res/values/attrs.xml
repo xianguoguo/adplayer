@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/* Copyright 2007, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+
+<resources>
+    <declare-styleable name="ApplicationsStackLayout">
+        <attr name="stackOrientation">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+        <attr name="marginLeft" format="dimension"  />
+        <attr name="marginTop" format="dimension"  />
+        <attr name="marginRight" format="dimension"  />
+        <attr name="marginBottom" format="dimension"  />
+    </declare-styleable>
+
+    <declare-styleable name="MyVideoPlayer">
+
+        <attr name="vp_source" format="string"/>
+
+        <attr name="vp_leftAction" format="enum">
+            <enum name="none" value="0"/>
+            <enum name="restart" value="1"/>
+            <enum name="retry" value="2"/>
+        </attr>
+
+        <attr name="vp_rightAction" format="enum">
+            <enum name="none" value="3"/>
+            <enum name="submit" value="4"/>
+            <enum name="customLabel" value="5"/>
+        </attr>
+
+        <attr name="vp_customLabelText" format="string"/>
+        <attr name="vp_retryText" format="string"/>
+        <attr name="vp_submitText" format="string"/>
+        <attr name="vp_bottomText" format="string"/>
+
+        <attr name="vp_restartDrawable" format="reference"/>
+        <attr name="vp_playDrawable" format="reference"/>
+        <attr name="vp_pauseDrawable" format="reference"/>
+
+        <attr name="vp_hideControlsOnPlay" format="boolean"/>
+        <attr name="vp_autoPlay" format="boolean"/>
+
+        <attr name="vp_disableControls" format="boolean"/>
+
+        <attr name="vp_themeColor" format="color"/>
+
+        <attr name="vp_autoFullscreen" format="boolean"/>
+
+        <attr name="vp_loop" format="boolean"/>
+
+    </declare-styleable>
+
+</resources>

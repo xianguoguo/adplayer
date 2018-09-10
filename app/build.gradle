@@ -1,0 +1,96 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "27.0.3"
+    defaultConfig {
+        applicationId "com.adshow.player"
+        minSdkVersion 19
+        targetSdkVersion 26
+
+        javaCompileOptions {
+            // 显式声明支持注解
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    //greendao配置
+    greendao {
+        //版本号，升级时可配置
+        schemaVersion 3
+        daoPackage 'com.adshow.player.dao'//这个是生成代码保存的包名
+        targetGenDir 'D:\\android-tv\\AndroidTvLauncher2-master\\app\\src\\main\\java'//保存到java代码路径
+    }
+}
+
+//引用tbsplus
+repositories{
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+
+dependencies {
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:percent:26.1.0'
+
+    //implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation files('libs/google_bitmapfun_old.jar')
+    //implementation files('libs/jackson-all-1.9.11.jar')
+    implementation files('libs/universal-image-loader-1.9.2-SNAPSHOT-with-sources.jar')
+    implementation files('libs/xUtils-2.6.13.jar')
+
+    implementation files('libs/tbs_sdk_thirdapp_v3.6.0.1325_43613_sharewithdownload_withoutGame_obfs_20180807_151115.jar')
+
+    //引用tbsplus
+    //implementation(name: 'tbsplus_3.6.0.1248_43611_sharewithdownload_withoutGame_obfs', ext: 'aar')
+
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+
+    implementation 'com.squareup.picasso:picasso:2.3.2'
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.daimajia.slider:library:1.1.5@aar'
+
+    implementation 'com.jakewharton:butterknife:7.0.0'
+    implementation 'com.google.android:flexbox:1.0.0'
+    implementation 'com.flyco.roundview:FlycoRoundView_Lib:1.1.4@aar'
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.8.2'
+
+    implementation 'org.greenrobot:greendao:3.2.2'
+    implementation 'org.greenrobot:eventbus:3.0.0'
+
+    implementation 'com.liulishuo.okdownload:okdownload:1.0.4'
+    implementation 'com.liulishuo.okdownload:sqlite:1.0.4'
+    implementation 'com.liulishuo.okdownload:okhttp:1.0.4'
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+
+
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    implementation project(':banner')
+    implementation project(':text')
+    implementation project(':json2view')
+}
