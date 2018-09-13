@@ -1,15 +1,22 @@
 package com.adshow.player.service;
 
 import android.app.Service;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.adshow.player.activitys.MainActivity;
+import com.adshow.player.activitys.schedule.ScreenOffAdminReceiver;
 import com.adshow.player.bean.Advertising;
 import com.adshow.player.bean.History;
 import com.adshow.player.bean.Schedule;
@@ -153,19 +160,52 @@ public class ADPlayerBackendService extends Service {
     };
 
 
+
+    private DevicePolicyManager policyManager;
+    private ComponentName adminReceiver;
+    private PowerManager mPowerManager;
+    private PowerManager.WakeLock mWakeLock;
+
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
-        testDatabase();
         EventBus.getDefault().register(this);
+        testDatabase();
+        /*
         bunchDir = new File("/sdcard", "Advertising");
         initDownloadListener();
         download(new String[]{
                 "http://192.168.1.4:8089/ad/player/program/452.zip",
                 "http://192.168.1.4:8089/ad/player/program/361.zip"
-        });
+        });*/
+
+        adminReceiver = new ComponentName(this.getApplicationContext(), ScreenOffAdminReceiver.class);
+        mPowerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        policyManager = (DevicePolicyManager) this.getApplicationContext().getSystemService(Context.DEVICE_POLICY_SERVICE);
+
+        boolean admin = policyManager.isAdminActive(adminReceiver);
+        if (admin) {
+            policyManager.lockNow();
+            new Handler().postDelayed(new Runnable(){
+                public void run() {
+                    turnOnScreen();
+                }
+            }, 5000);
+        } else {
+            Toast.makeText(getApplicationContext(), "没有设备管理权限", Toast.LENGTH_LONG);
+        }
+
     }
+
+    public void turnOnScreen() {
+        // turn on screen
+        Log.v("ProximityActivity", "ON!");
+        mWakeLock = mPowerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "tag");
+        mWakeLock.acquire();
+        mWakeLock.release();
+    }
+
 
     @Override
     public void onDestroy() {

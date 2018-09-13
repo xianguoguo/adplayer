@@ -1,1 +1,1 @@
-include ':app', ':banner', ':text', ':json2view', ':utils'
+include ':app', ':banner', ':text', ':json2view', ':utils', ':support-preference', ':support-spinner'

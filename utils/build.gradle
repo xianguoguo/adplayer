@@ -5,7 +5,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.1.6'
+    implementation 'org.codehaus.groovy:groovy-all:2.1.6'
 }
 
 task runScript(dependsOn: 'classes', type: JavaExec) {

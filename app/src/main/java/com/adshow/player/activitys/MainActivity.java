@@ -1,14 +1,22 @@
 package com.adshow.player.activitys;
 
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.PowerManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.adshow.player.R;
+import com.adshow.player.activitys.schedule.ScreenOffAdminReceiver;
 import com.adshow.player.activitys.setting.SettingFragment;
 import com.adshow.player.adapter.MainActivityAdapter;
 import com.adshow.player.service.ADPlayerBackendService;
@@ -23,9 +31,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private RadioButton localService;
     private RadioButton setting;
 
-    private List<Fragment> fragments = new ArrayList<>();
+    private List<Fragment> fragments = new ArrayList<Fragment>();
     private View mViews[];
     private int mCurrentIndex = 0;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +47,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initFragment();
         Intent intent = new Intent(this, ADPlayerBackendService.class);
         startService(intent);
+
+        intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,  new ComponentName(this.getApplicationContext(), ScreenOffAdminReceiver.class));
+        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,"开启后就可以使用锁屏功能了...");
+        startActivityForResult(intent, 0);
+
+
     }
+
 
     private void initView() {
         mViewPager = (MyViewPager) this.findViewById(R.id.main_viewpager);

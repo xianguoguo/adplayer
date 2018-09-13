@@ -21,6 +21,8 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+            aaptOptions.cruncherEnabled = false
+            aaptOptions.useNewCruncher = false
         }
     }
 
@@ -29,7 +31,22 @@ android {
         abortOnError false
     }
 
-    //greendao配置
+    signingConfigs {
+        release {
+            storeFile file("../platform.keystore")
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+
+        debug {
+            storeFile file("../platform.keystore")
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+
     greendao {
         //版本号，升级时可配置
         schemaVersion 3
@@ -47,8 +64,12 @@ repositories{
 
 
 dependencies {
+    //noinspection GradleCompatible
     implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.android.support:percent:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:preference-v7:26.1.0'
 
     //implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation files('libs/google_bitmapfun_old.jar')
@@ -64,8 +85,7 @@ dependencies {
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 
-    implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
     implementation 'com.squareup.picasso:picasso:2.3.2'
@@ -93,4 +113,7 @@ dependencies {
     implementation project(':banner')
     implementation project(':text')
     implementation project(':json2view')
+    implementation project(':support-spinner')
+    implementation project(':support-preference')
+    
 }

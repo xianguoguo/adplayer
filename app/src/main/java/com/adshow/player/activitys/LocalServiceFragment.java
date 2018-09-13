@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.adshow.player.R;
@@ -62,7 +61,45 @@ public class LocalServiceFragment extends Fragment implements View.OnClickListen
 
         }, 500);
 
+        new Handler().postDelayed(new Runnable() {
+
+            public void run() {
+//                Intent intent = new Intent("com.android.settings.action.REQUEST_POWER_ON");
+//                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+//                AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//                long time = System.currentTimeMillis() + 1000 * 1;
+//                am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, time, pendingIntent);
+
+//                Intent newIntent = new Intent("android.intent.action.ACTION_REQUEST_SHUTDOWN"/*Intent.ACTION_REQUEST_SHUTDOWN*/);
+//                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(newIntent);
+            }
+
+        }, 5000);
+
     }
+
+//    public static String getConnectedType(Context context) {
+//        String macAddress = null;
+//        if (context != null) {
+//            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+//                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+//            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+//            if (mNetworkInfo != null && mNetworkInfo.isAvailable()) {
+//                int type = mNetworkInfo.getType();
+//
+//                if (type == ConnectivityManager.TYPE_ETHERNET) {
+//                    EthernetManager mEthManager = (EthernetManager) context.getSystemService(Context.ETHERNET_SERVICE);
+//                    macAddress = mEthManager.getDevInfo().getHwaddr().toUpperCase();
+//                } else if (type == ConnectivityManager.TYPE_WIFI) {
+//                    WifiManager mWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+//                    macAddress = mWifiManager.getConnectionInfo().getMacAddress().toUpperCase();
+//                }
+//            }
+//        }
+//        return macAddress;
+//    }
+
 
     @Override
     public void onClick(View v) {

@@ -19,6 +19,27 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+
+        <item name="android:textColorHighlight">@color/text_highlight</item>
+
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.Material</item>
+
+        <!--<item name="colorPreferenceStyle">-->
+        <!--@style/Preference.Material.DialogPreference.ColorPreference-->
+        <!--</item>-->
+
+        <!--<item name="android:textAppearanceMedium">?textAppearanceListItem</item>-->
+        <item name="android:textAppearanceMedium">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:textAppearanceMediumInverse">
+            @style/TextAppearance.AppCompat.Subhead.Inverse
+        </item>
+
+        <item name="asp_preferenceIconTint">?colorAccent</item>
+        <item name="asp_preferenceDialogIconTint">?asp_preferenceIconTint</item>
     </style>
 
     <style name="CategoryButtonStyle">

@@ -1,0 +1,53 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+
+        consumerProguardFiles 'proguard-consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled false
+        }
+    }
+
+    resourcePrefix 'asp_'
+
+    lintOptions {
+        disable 'ResourceName', 'InlinedApi'
+        warning 'GradleCompatible'
+        checkReleaseBuilds = false
+        abortOnError = false
+        // Revert when lint stops with all the false positives >:-(
+    }
+}
+
+dependencies {
+    implementation "com.android.support:support-annotations:$supportLibVersionAnnotations"
+    implementation "com.android.support:appcompat-v7:$supportLibVersion"
+    implementation "com.android.support:preference-v7:$supportLibVersion"
+    implementation project(':support-spinner')
+}
+
+repositories {
+    jcenter()
+    google()
+}
+
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+}
+
+group = rootProject.GROUP_ID
+version = rootProject.VERSION_NAME
+

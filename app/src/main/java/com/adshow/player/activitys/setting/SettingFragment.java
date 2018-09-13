@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.adshow.player.R;
+import com.adshow.player.activitys.LoginActivity;
 import com.adshow.player.activitys.app.AppAutoRun;
 import com.adshow.player.activitys.downloadProcess.DownloadProcessActivity;
 import com.adshow.player.activitys.garbageclear.GarbageClear;
@@ -89,8 +90,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 startActivity(jumpIntent);
                 break;
             case R.id.systemLogin:
-//                jumpIntent = new Intent(context, AppAutoRun.class);
-//                startActivity(jumpIntent);
+                jumpIntent = new Intent(context, LoginActivity.class);
+                startActivity(jumpIntent);
                 break;
             case R.id.aboutUs:
 //                jumpIntent = new Intent(context, AppAutoRun.class);

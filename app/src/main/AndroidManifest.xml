@@ -5,6 +5,9 @@
     android:versionCode="17"
     android:versionName="1.8.17">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <user-permission android:name="android.permission.DEVICE_POWER"/>
+    <uses-permission android:name="android.permission.USES_POLICY_FORCE_LOCK" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -38,7 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name="com.adshow.player.activitys.LoginActivity"/>
         <activity android:name="com.adshow.player.activitys.app.AppAutoRun" />
         <activity android:name="com.adshow.player.activitys.speedtest.SpeedTestActivity" />
         <activity android:name="com.adshow.player.activitys.fullscreen.FullScreenPlayActivity" />
@@ -48,5 +51,17 @@
         <activity android:name="com.adshow.player.activitys.downloadProcess.DownloadProcessActivity"/>
         <activity android:name="com.adshow.player.activitys.fullscreen.PlayingActivity"/>
         <service android:name="com.adshow.player.service.ADPlayerBackendService"/>
+
+        <receiver
+            android:name="com.adshow.player.activitys.schedule.ScreenOffAdminReceiver"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

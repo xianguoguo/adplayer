@@ -1,0 +1,44 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds = false
+        abortOnError = false
+        // Revert when lint stops with all the false positives >:-(
+    }
+}
+
+dependencies {
+    compile "com.android.support:support-annotations:$supportLibVersionAnnotations"
+    compile "com.android.support:appcompat-v7:$supportLibVersion"
+}
+
+repositories {
+    jcenter()
+    google()
+}
+
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+}
+
+group = rootProject.GROUP_ID
+version = rootProject.VERSION_NAME
