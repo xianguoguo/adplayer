@@ -12,29 +12,36 @@
         android:layout_marginTop="20dp" />
 
 
-    <RadioGroup android:id="@+id/main_group"
+    <RadioGroup
+        android:id="@+id/main_group"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal">
 
-        <RadioButton android:id="@+id/main_title_local"
+        <RadioButton
+            android:id="@+id/main_title_local"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/sel_local_service"
-            android:button="@null" />
+            android:button="@null"
+            android:focusable="false" />
 
-        <ImageView android:layout_width="wrap_content"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/title_divider"
-            android:contentDescription="" />
+            android:contentDescription=""
+            android:focusable="false" />
 
-        <RadioButton android:id="@+id/main_title_setting"
+        <RadioButton
+            android:id="@+id/main_title_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/sel_setting"
-            android:button="@null" />
+            android:button="@null"
+            android:focusable="false" />
 
     </RadioGroup>
 
