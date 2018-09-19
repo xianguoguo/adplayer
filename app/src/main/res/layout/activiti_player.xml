@@ -1,0 +1,71 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.adshow.player.activitys.fullscreen.PlayerActivity">
+
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_bannerView_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_bannerView_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1" />
+
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_bannerView_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0" />
+
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_bannerView_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1" />
+
+<!---->
+    <com.adshow.player.widgets.ExoVideoViewWrapper
+        android:id="@+id/audioPlayerView"
+        style="@style/advertiseItemViewStyle"
+        android:layout_centerInParent="true"
+        android:focusable="true"
+        app:corner_radius="0dp"
+        app:layout_constraintHeight_percent="1"
+        app:layout_constraintWidth_percent="1"
+        app:video_src="/sdcard/Advertising/4303/Music/201801101738276686.mp3"
+        android:visibility="invisible"
+        />
+
+
+    <com.adshow.player.widgets.ImageSliderViewWrapper
+        android:id="@+id/sliderView"
+        style="@style/advertiseItemViewStyle"
+        android:layout_centerInParent="true"
+        android:focusable="true"
+        app:corner_radius="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_bannerView_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_bannerView_right"
+        app:layout_constraintHeight_percent="1"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_bannerView_left"
+        app:layout_constraintTop_toBottomOf="@id/guideline_bannerView_top"
+        app:layout_constraintWidth_percent="1"
+        app:img_list="/sdcard/Advertising/4303/Images/201807280906560146.jpg,/sdcard/Advertising/4303/Images/201807280906563946.jpg,/sdcard/Advertising/4303/Images/201807280906585846.jpg,/sdcard/Advertising/4303/Images/201807280907326347.jpg,/sdcard/Advertising/4303/Images/201807280907344747.jpg"
+        />
+
+
+
+
+</android.support.constraint.ConstraintLayout>

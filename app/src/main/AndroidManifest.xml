@@ -44,7 +44,7 @@
         <activity android:name="com.adshow.player.activitys.LoginActivity"/>
         <activity android:name="com.adshow.player.activitys.app.AppAutoRun" />
         <activity android:name="com.adshow.player.activitys.speedtest.SpeedTestActivity" />
-        <activity android:name="com.adshow.player.activitys.fullscreen.FullScreenPlayActivity" />
+        <activity android:name="com.adshow.player.activitys.fullscreen.PlayerActivity" />
         <activity android:name="com.adshow.player.activitys.garbageclear.GarbageClear"
             android:theme="@android:style/Theme.Dialog" />
         <activity android:name="com.adshow.player.activitys.playProcess.PlayTimelineActivity"/>

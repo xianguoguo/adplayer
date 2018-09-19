@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:title="自启设置"
+        android:key="setting_auto">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="setting_auto_enable"
+            android:title="自启开关"/>
+
+        <com.adshow.player.activitys.preference.TimePickerPreference
+            android:dependency="setting_auto_enable"
+            android:key="setting_auto_on"
+            android:summary=""
+            android:title="开机时间"
+            android:defaultValue="0"/>
+
+        <com.adshow.player.activitys.preference.TimePickerPreference
+            android:dependency="setting_auto_enable"
+            android:key="setting_auto_off"
+            android:summary=""
+            android:title="关机时间"
+            android:defaultValue="0"/>
+
+        <CheckBoxPreference
+            android:textColor="#FFFFFF"
+            android:defaultValue="true"
+            android:dependency="setting_auto_enable"
+            android:key="setting_auto_play"
+            android:summary="系统检测并保持播放状态"
+            android:title="自启播放"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

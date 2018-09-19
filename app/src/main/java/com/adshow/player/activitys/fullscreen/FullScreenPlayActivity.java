@@ -131,7 +131,7 @@ public class FullScreenPlayActivity extends AppCompatActivity {
 
     private void initializePlayer() {
 
-        mVideoPlayerView = findViewById(R.id.videoPlayerView);
+        mVideoPlayerView = findViewById(R.id.videoPlayerView2);
         mVideoPlayerView.requestFocus();
 
         TrackSelection.Factory videoTrackSelectionFactory =

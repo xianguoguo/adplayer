@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.adshow.player.R;
 import com.adshow.player.activitys.downloadProcess.DownloadProcessActivity;
 import com.adshow.player.activitys.fullscreen.FullScreenPlayActivity;
+import com.adshow.player.activitys.fullscreen.PlayerActivity;
 import com.adshow.player.activitys.playProcess.PlayTimelineActivity;
 import com.adshow.player.views.FocusPercentRelativeLayout;
 
@@ -114,7 +115,7 @@ public class LocalServiceFragment extends Fragment implements View.OnClickListen
                 startActivity(jumpIntent);
                 break;
             case R.id.play:
-                jumpIntent = new Intent(context, FullScreenPlayActivity.class);
+                jumpIntent = new Intent(context, PlayerActivity.class);
                 startActivity(jumpIntent);
                 break;
             case R.id.statistics:

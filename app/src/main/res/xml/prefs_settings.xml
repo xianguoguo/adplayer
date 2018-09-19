@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/general_preference_title"
+        android:key="setari_generale">
+        <com.adshow.player.activitys.preference.TimePickerPreference
+            android:key="time_picker"
+            android:summary=""
+            android:title="@string/general_preference_time_picker"
+            android:defaultValue="0"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

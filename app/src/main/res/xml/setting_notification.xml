@@ -38,18 +38,18 @@
         android:summary="Some supposedly long text to emulate multiline summary. And even more text to make sure it sticks."
         android:title="@string/pref_title_vibrate"/>
 
-    <!--<android.support.v7.preference.SeekBarPreference-->
-        <!--android:defaultValue="50"-->
-        <!--android:dependency="notifications_new_message"-->
-        <!--android:icon="@drawable/ic_volume_up_black_24dp"-->
-        <!--android:key="notifications_new_message_volume1"-->
-        <!--android:max="100"-->
-        <!--android:title="@string/pref_title_volume2"-->
-        <!--android:summary="@string/pref_title_volume2"-->
-        <!--app:asp_dialogTintEnabled="true"-->
-        <!--app:min="20"-->
-        <!--app:asp_tintEnabled="true"/>-->
-
+    <android.support.v7.preference.SeekBarPreference
+        android:defaultValue="50"
+        android:dependency="notifications_new_message"
+        android:icon="@drawable/setting_volume_up_black_24dp"
+        android:key="notifications_new_message_volume1"
+        android:max="100"
+        android:title="@string/pref_title_volume2"
+        android:summary="@string/pref_title_volume2"
+        app:asp_dialogTintEnabled="true"
+        app:min="20"
+        app:asp_tintEnabled="true"/>
+<!--
     <SeekBarPreference
         android:defaultValue="50"
         android:dependency="notifications_new_message"
@@ -60,7 +60,7 @@
         app:asp_dialogTintEnabled="true"
         app:asp_infoAnchor="@android:id/title"
         app:asp_min="20"
-        app:asp_tintEnabled="true"/>
+        app:asp_tintEnabled="true"/>-->
 
     <SeekBarDialogPreference
         android:defaultValue="768"

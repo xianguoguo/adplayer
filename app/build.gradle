@@ -53,6 +53,12 @@ android {
         daoPackage 'com.adshow.player.dao'//这个是生成代码保存的包名
         targetGenDir 'D:\\android-tv\\AndroidTvLauncher2-master\\app\\src\\main\\java'//保存到java代码路径
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 //引用tbsplus
@@ -86,7 +92,7 @@ dependencies {
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 
 
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
     implementation 'com.squareup.picasso:picasso:2.3.2'
     implementation 'com.nineoldandroids:library:2.4.0'
@@ -115,5 +121,6 @@ dependencies {
     implementation project(':json2view')
     implementation project(':support-spinner')
     implementation project(':support-preference')
+    implementation project(':exoplayerview')
     
 }

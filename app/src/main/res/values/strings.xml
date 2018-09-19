@@ -49,6 +49,30 @@
     <string name="stop_timing_clear">停止定时清理</string>
 
 
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+
+    <string name="ab_monday">Mon</string>
+    <string name="ab_tuesday">Tue</string>
+    <string name="ab_wednesday">Wed</string>
+    <string name="ab_thursday">Thu</string>
+    <string name="ab_friday">Fri</string>
+    <string name="ab_saturday">Sat</string>
+    <string name="ab_sunday">Sun</string>
+
+    <string name="time_picker_set">确定</string>
+    <string name="time_picker_cancel">Cancel</string>
+
+    <string name="general_preference_title">General Settings</string>
+    <string name="general_preference_time_picker">Time</string>
+    <string name="general_preference_alarm_repeat">Repeat</string>
+
+
     <string name="settings_activity_title">Support Preferences</string>
     <string name="lipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed luctus tincidunt nisi nec finibus.</string>
     <string name="github">GitHub</string>
