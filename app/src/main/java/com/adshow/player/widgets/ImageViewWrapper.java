@@ -16,6 +16,8 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.adshow.player.R;
 import com.adshow.player.util.AppUtils;
@@ -23,6 +25,8 @@ import com.adshow.player.util.AppUtils;
 
 public class ImageViewWrapper extends AppCompatImageView {
     private Context context;
+
+    private String imageUrl;
 
     private boolean isCircle; // 是否显示为圆形，如果为圆形则设置的corner无效
     private boolean isCoverSrc; // border、inner_border是否覆盖图片
@@ -94,12 +98,6 @@ public class ImageViewWrapper extends AppCompatImageView {
                 cornerBottomRightRadius = ta.getDimensionPixelSize(attr, cornerBottomRightRadius);
             } else if (attr == R.styleable.ImageViewWrapper_mask_color) {
                 maskColor = ta.getColor(attr, maskColor);
-            } else if(attr == R.styleable.ImageViewWrapper_img_src){
-                String path = ta.getString(attr);
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 2;
-                Bitmap bm = BitmapFactory.decodeFile(path, options);
-                this.setImageBitmap(bm);
             }
         }
         ta.recycle();
@@ -114,6 +112,17 @@ public class ImageViewWrapper extends AppCompatImageView {
 
         calculateRadii();
         clearInnerBorderWidth();
+
+        this.setId(View.generateViewId());
+        this.setScaleType(ImageView.ScaleType.FIT_XY);
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @Override

@@ -23,8 +23,8 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:support-annotations:$supportLibVersionAnnotations"
-    compile "com.android.support:appcompat-v7:$supportLibVersion"
+    implementation "com.android.support:support-annotations:$supportLibVersionAnnotations"
+    implementation "com.android.support:appcompat-v7:$supportLibVersion"
 }
 
 repositories {

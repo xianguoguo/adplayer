@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-    compile project(':support-preference')
+    implementation project(':support-preference')
 }
 
 repositories {

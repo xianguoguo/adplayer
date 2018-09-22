@@ -13,14 +13,13 @@ import com.youth.banner.Banner;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.youth.banner.BannerConfig.NOT_INDICATOR;
 
 public class ImageSliderViewWrapper extends Banner {
 
-    private Context context;
-
-    private String imageSrc;
+    private List<String> imageList = new ArrayList<>();
 
     public ImageSliderViewWrapper(Context context) {
         this(context, null);
@@ -32,24 +31,11 @@ public class ImageSliderViewWrapper extends Banner {
 
     public ImageSliderViewWrapper(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+    }
 
-        this.context = context;
 
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.ImageSliderViewWrapper, 0, 0);
-        for (int i = 0; i < ta.getIndexCount(); i++) {
-            int attr = ta.getIndex(i);
-            if (attr == R.styleable.ImageSliderViewWrapper_img_list) {
-                imageSrc = ta.getString(attr);
-            }
-        }
-        ta.recycle();
-
-        ArrayList imageList = new ArrayList<>();
-        if (imageSrc != null && imageSrc.length() != 0) {
-            for (String tmp : imageSrc.split(",")) {
-                imageList.add("file:///" + tmp);
-            }
-        }
+    public void init(List<String> imageList) {
+        this.imageList = imageList;
         this.setDelayTime(3000);
         //设置图片加载器
         this.setImageLoader(new PicassoImageLoader())
@@ -63,7 +49,6 @@ public class ImageSliderViewWrapper extends Banner {
                 .setBannerAnimation(FadeInTransformer.class)
                 .start();
     }
-
 
     public class PicassoImageLoader extends ImageLoader {
         @Override

@@ -1,0 +1,60 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+def versionMajor = 4
+def versionMinor = 2
+def versionPatch = 3
+
+def libraryGroupId = 'com.devbrackets.android'
+def libraryBaseName = 'exomedia'
+def libraryVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
+
+dependencies {
+    implementation "com.android.support:support-media-compat:$rootProject.ext.supportLibVersion"
+    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"
+
+    // ExoPlayer
+    api "com.google.android.exoplayer:exoplayer-core:$rootProject.ext.exoPlayerVersion"
+    api "com.google.android.exoplayer:exoplayer-dash:$rootProject.ext.exoPlayerVersion"
+    api "com.google.android.exoplayer:exoplayer-hls:$rootProject.ext.exoPlayerVersion"
+    api "com.google.android.exoplayer:exoplayer-smoothstreaming:$rootProject.ext.exoPlayerVersion"
+}
+
+android {
+    compileSdkVersion 27
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 26
+
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+// ======== MAVEN DEPLOY to local cache or nexus repo (to make accessible to local projects) (command: ./gradlew clean aRel uploadArchives) ========
+uploadArchives {
+    repositories {
+        // deploy to local
+        mavenDeployer {
+            repository (url: "file://${System.env.HOME}/.m2/repository/")
+            pom.groupId = libraryGroupId
+            pom.artifactId = libraryBaseName
+            pom.version = libraryVersion //Normally I would append "-SNAPSHOT" but newer gradle/maven can't always find them
+            pom.packaging = 'aar'
+            uniqueVersion = false // don't put in a timestamp on the filename (other project will not be able to depend on it)
+        }
+    }
+}
+
