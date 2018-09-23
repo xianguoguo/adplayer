@@ -1,6 +1,9 @@
 package com.adshow.player.util;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.constraint.Guideline;
@@ -11,6 +14,27 @@ public class AppUtils {
     public static int dp2px(Context context, float dipValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
+    }
+
+    public static String getMacAddress(Context context) {
+        String macAddress = null;
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null && mNetworkInfo.isAvailable()) {
+                int type = mNetworkInfo.getType();
+                if (type == ConnectivityManager.TYPE_ETHERNET) {
+
+//                    EthernetManager mEthManager = (EthernetManager)context.getSystemService(Context.ETHERNET_SERVICE);
+//                    macAddress = mEthManager.getDevInfo().getHwaddr().toUpperCase();
+                } else if (type == ConnectivityManager.TYPE_WIFI) {
+                    WifiManager mWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+                    macAddress = mWifiManager.getConnectionInfo().getMacAddress().toUpperCase();
+                }
+            }
+        }
+        return macAddress;
     }
 
 

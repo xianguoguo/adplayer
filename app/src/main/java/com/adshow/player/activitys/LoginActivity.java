@@ -1,36 +1,90 @@
 package com.adshow.player.activitys;
 
-import android.graphics.Color;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
+import android.widget.EditText;
 
 import com.adshow.player.R;
+import com.adshow.player.service.ADPlayerBackendService;
+import com.adshow.player.service.request.LoginRequest;
+import com.adshow.player.service.response.RestResult;
+import com.dd.processbutton.iml.ActionProcessButton;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    Button loginButton;
+    ActionProcessButton loginButton;
+    EditText usernameEditText;
+    EditText passwordEditText;
+    Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         setContentView(R.layout.activity_login);
-        loginButton = (Button) findViewById(R.id.loginButton);
-        loginButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        usernameEditText = (EditText) findViewById(R.id.username);
+        passwordEditText = (EditText) findViewById(R.id.password);
+        loginButton = (ActionProcessButton) findViewById(R.id.loginButton);
 
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Button btn = (Button) v;
-                int focus = hasFocus ? R.anim.enlarge : R.anim.decrease;
-                Animation mAnimation = AnimationUtils.loadAnimation(getApplication(), focus);
-                mAnimation.setBackgroundColor(Color.TRANSPARENT);
-                mAnimation.setFillAfter(hasFocus);
-                btn.startAnimation(mAnimation);
-                mAnimation.start();
-                btn.setBackgroundColor(hasFocus ? Color.parseColor("#cc0094ff") : Color.parseColor("#2299ee"));
+            public void onClick(View v) {
+                usernameEditText.setEnabled(false);
+                passwordEditText.setEnabled(false);
+                loginButton.setEnabled(false);
+                loginButton.setMode(ActionProcessButton.Mode.ENDLESS);
+                loginButton.setProgress(10);
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1000);
+                            LoginRequest loginRequest = new LoginRequest();
+                            loginRequest.setUsername("admin");
+                            loginRequest.setPassword("123456");
+                            loginRequest.setDeviceMac("mac123456");
+                            Call<RestResult<Object>> call = ADPlayerBackendService.getInstance().getRestApi().login(loginRequest);
+                            call.enqueue(new Callback<RestResult<Object>>() {
+                                @Override
+                                public void onResponse(Call<RestResult<Object>> call, Response<RestResult<Object>> response) {
+                                    loginButton.setProgress(50);
+                                    // 已经转换为想要的类型了
+                                    RestResult<Object> result = response.body();
+                                    System.out.println(result);
+
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1000);
+                                                Intent intent = new Intent(mContext, MainActivity.class);
+                                                startActivity(intent);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }.run();
+                                }
+
+                                @Override
+                                public void onFailure(Call<RestResult<Object>> call, Throwable t) {
+                                    t.printStackTrace();
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.run();
+
             }
         });
     }

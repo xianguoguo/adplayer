@@ -24,6 +24,8 @@ import com.adshow.player.event.MyEvent;
 import com.adshow.player.event.PlayEvent;
 import com.adshow.player.util.DaoManager;
 import com.adshow.player.util.FileUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.liulishuo.okdownload.DownloadContext;
 import com.liulishuo.okdownload.DownloadContextListener;
 import com.liulishuo.okdownload.DownloadListener;
@@ -45,6 +47,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class ADPlayerBackendService extends Service {
     private static final String TAG = "ADPlayerBackendService";
 
@@ -59,6 +64,39 @@ public class ADPlayerBackendService extends Service {
     public static ADPlayerBackendService getInstance() {
         return instance;
     }
+
+
+    public RestWeatherApi getRestWeatherApi() {
+        Gson gson = new GsonBuilder()
+                //配置你的Gson
+                .setDateFormat("yyyy-MM-dd hh:mm:ss")
+                .create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://t.weather.sojson.com/")
+                //可以接收自定义的Gson，当然也可以不传
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        return retrofit.create(RestWeatherApi.class);
+    }
+
+
+    public RestApi getRestApi() {
+        Gson gson = new GsonBuilder()
+                //配置你的Gson
+                .setDateFormat("yyyy-MM-dd hh:mm:ss")
+                .create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.4:8089/")
+                //可以接收自定义的Gson，当然也可以不传
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        return retrofit.create(RestApi.class);
+    }
+
 
     private void testDatabase() {
 
