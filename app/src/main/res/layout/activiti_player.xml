@@ -5,87 +5,53 @@
     android:layout_height="match_parent"
     android:id="@+id/playerLayout"
     tools:context="com.adshow.player.activitys.fullscreen.PlayerActivity">
-
 <!--
     <android.support.constraint.Guideline
-        android:id="@+id/guideline_bannerView_top"
+        android:id="@+id/guideline_scrollTextView_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.8361111111111111" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline_bannerView_bottom"
+        android:id="@+id/guideline_scrollTextView_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9" />
+        app:layout_constraintGuide_percent="1" />
 
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline_bannerView_left"
+        android:id="@+id/guideline_scrollTextView_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.24375" />
 
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline_bannerView_right"
+        android:id="@+id/guideline_scrollTextView_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.9" />
--->
+        app:layout_constraintGuide_percent="0.8125" />
 
-
-<!--
-    <com.adshow.player.widgets.ExoVideoViewWrapper
-        android:id="@+id/audioPlayerView"
+    <anylife.scrolltextview.ScrollTextView
+        android:id="@+id/scrollTextView"
         style="@style/advertiseItemViewStyle"
-        android:layout_centerInParent="true"
-        android:focusable="true"
-        app:corner_radius="0dp"
-        app:layout_constraintHeight_percent="1"
-        app:layout_constraintWidth_percent="1"
-        app:layout_constraintHeight_default="percent"
-        app:video_src="/sdcard/Advertising/4303/Music/201801101738276686.mp3"
-        android:visibility="invisible"
-        />
+        app:clickEnable="true"
+        app:isHorizontal="true"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_scrollTextView_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_scrollTextView_right"
+        app:layout_constraintHeight_percent="0.1638888888888889"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_scrollTextView_left"
+        app:layout_constraintTop_toBottomOf="@id/guideline_scrollTextView_top"
 
-
-    <com.adshow.player.widgets.ImageViewWrapper
-        style="@style/advertiseItemViewStyle"
-        android:layout_centerInParent="true"
-        app:layout_constraintHeight_percent="0.8"
-        app:layout_constraintWidth_percent="0.8"
-        app:layout_constraintBottom_toBottomOf="@+id/guideline_bannerView_bottom"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_bannerView_right"
-        app:layout_constraintLeft_toLeftOf="@id/guideline_bannerView_left"
-        app:layout_constraintTop_toTopOf="@id/guideline_bannerView_top"
-        />
--->
-
-<!--
-    <com.adshow.player.widgets.ImageSliderViewWrapper
-        android:id="@+id/sliderView"
-        style="@style/advertiseItemViewStyle"
-        android:layout_centerInParent="true"
-        android:focusable="true"
-        app:corner_radius="0dp"
-
-        app:layout_constraintHeight_percent="1"
-
-        app:layout_constraintWidth_percent="1"
-        app:img_list="/sdcard/Advertising/4303/Images/201807280906560146.jpg,/sdcard/Advertising/4303/Images/201807280906563946.jpg,/sdcard/Advertising/4303/Images/201807280906585846.jpg,/sdcard/Advertising/4303/Images/201807280907326347.jpg,/sdcard/Advertising/4303/Images/201807280907344747.jpg"
-        />
--->
-
-<!--
-        app:layout_constraintBottom_toTopOf="@+id/guideline_bannerView_bottom"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_bannerView_right"
-        app:layout_constraintLeft_toLeftOf="@id/guideline_bannerView_left"
-        app:layout_constraintTop_toBottomOf="@id/guideline_bannerView_top"
--->
+        app:layout_constraintWidth_percent="0.56875"
+        app:speed="1"
+        app:text="广告招商热线：18100780990"
+        app:textColor="#ff0000"
+        app:textSize="28sp"
+       />-->
 
 </android.support.constraint.ConstraintLayout>

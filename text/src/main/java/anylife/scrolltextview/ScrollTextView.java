@@ -63,7 +63,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
      * @param context you should know
      */
     public ScrollTextView(Context context) {
-        super(context);
+        this(context, null);
     }
 
     /**
@@ -73,7 +73,11 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
      * @param attrs   ATTRS
      */
     public ScrollTextView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
+    }
+
+    public ScrollTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         surfaceHolder = this.getHolder();  //get The surface holder
         surfaceHolder.addCallback(this);
         paint = new Paint();
@@ -98,6 +102,15 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
         density = metric.density;
 
         setFocusable(true);
+    }
+
+
+    public void setTextSize(float textSize) {
+        paint.setTextSize(textSize);
+    }
+
+    public void setTextColor(int textColor) {
+        paint.setColor(textColor);
     }
 
     /**
@@ -200,7 +213,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
     /**
      * set scroll speed
      *
-     * @param speed  SCROLL SPEED [0,10] ///// 0?
+     * @param speed SCROLL SPEED [0,10] ///// 0?
      */
     public void setSpeed(int speed) {
         if (speed > 10 || speed < 0) {

@@ -5,7 +5,6 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -15,7 +14,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.adshow.player.activitys.MainActivity;
 import com.adshow.player.activitys.schedule.ScreenOffAdminReceiver;
 import com.adshow.player.bean.Advertising;
 import com.adshow.player.bean.History;
@@ -47,6 +45,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -58,6 +60,7 @@ public class ADPlayerBackendService extends Service {
     private int currentCount;
     private DownloadListener listener;
     private DownloadContext downloadContext;
+    private String accessToken;
 
     private static ADPlayerBackendService instance;
 
@@ -65,6 +68,31 @@ public class ADPlayerBackendService extends Service {
         return instance;
     }
 
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public OkHttpClient genericClient() {
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Interceptor.Chain chain) throws IOException {
+                        Request.Builder builder = chain.request()
+                                .newBuilder();
+                        if (accessToken != null && accessToken.length() > 0) {
+                            builder.addHeader("accessToken", "gzip, deflate");
+                        }
+                        builder.addHeader("Accept-Encoding", "gzip, deflate")
+                                .addHeader("Connection", "keep-alive")
+                                .addHeader("Accept", "*/*");
+
+                        return chain.proceed(builder.build());
+                    }
+                })
+                .build();
+
+        return httpClient;
+    }
 
     public RestWeatherApi getRestWeatherApi() {
         Gson gson = new GsonBuilder()
@@ -76,6 +104,7 @@ public class ADPlayerBackendService extends Service {
                 .baseUrl("http://t.weather.sojson.com/")
                 //可以接收自定义的Gson，当然也可以不传
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(genericClient())
                 .build();
 
         return retrofit.create(RestWeatherApi.class);
@@ -92,6 +121,7 @@ public class ADPlayerBackendService extends Service {
                 .baseUrl("http://192.168.1.4:8089/")
                 //可以接收自定义的Gson，当然也可以不传
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(genericClient())
                 .build();
 
         return retrofit.create(RestApi.class);
@@ -198,7 +228,6 @@ public class ADPlayerBackendService extends Service {
     };
 
 
-
     private DevicePolicyManager policyManager;
     private ComponentName adminReceiver;
     private PowerManager mPowerManager;
@@ -225,7 +254,7 @@ public class ADPlayerBackendService extends Service {
         boolean admin = policyManager.isAdminActive(adminReceiver);
         if (admin) {
             policyManager.lockNow();
-            new Handler().postDelayed(new Runnable(){
+            new Handler().postDelayed(new Runnable() {
                 public void run() {
                     turnOnScreen();
                 }

@@ -24,7 +24,7 @@ public class RestResult<T> {
 
     private String message;
 
-    public T data;
+    public T result;
 
     @Override
     public String toString() {
@@ -32,7 +32,7 @@ public class RestResult<T> {
                 "success=" + success +
                 ", code='" + code + '\'' +
                 ", message='" + message + '\'' +
-                ", data=" + data +
+                ", result=" + result +
                 '}';
     }
 }

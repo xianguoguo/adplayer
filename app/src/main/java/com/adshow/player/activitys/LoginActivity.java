@@ -47,19 +47,14 @@ public class LoginActivity extends AppCompatActivity {
                     public void run() {
                         try {
                             Thread.sleep(1000);
-                            LoginRequest loginRequest = new LoginRequest();
-                            loginRequest.setUsername("admin");
-                            loginRequest.setPassword("123456");
-                            loginRequest.setDeviceMac("mac123456");
-                            Call<RestResult<Object>> call = ADPlayerBackendService.getInstance().getRestApi().login(loginRequest);
+                            Call<RestResult<Object>> call = ADPlayerBackendService.getInstance().getRestApi().login("mac", "admin", "123456");
                             call.enqueue(new Callback<RestResult<Object>>() {
                                 @Override
                                 public void onResponse(Call<RestResult<Object>> call, Response<RestResult<Object>> response) {
                                     loginButton.setProgress(50);
-                                    // 已经转换为想要的类型了
-                                    RestResult<Object> result = response.body();
-                                    System.out.println(result);
-
+                                    RestResult<Object> restResponse = response.body();
+                                    System.out.println(restResponse);
+                                    ADPlayerBackendService.getInstance().setAccessToken(restResponse.result.toString());
                                     new Runnable() {
                                         @Override
                                         public void run() {
