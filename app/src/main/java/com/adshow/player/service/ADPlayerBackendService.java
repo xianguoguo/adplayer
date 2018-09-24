@@ -192,26 +192,27 @@ public class ADPlayerBackendService extends Service {
     public void onPostingEvent(MyEvent event) {
         Log.d(TAG, "onPostingEvent:" + Thread.currentThread().getName());
         if ("playerReady".equals(event.msg)) {
+
+            PlayEvent playEvent = new PlayEvent("/sdcard/Advertising/465/config.json");
+            EventBus.getDefault().post(playEvent);
+            Log.d(TAG, "计算出当前应该播放的广告");
+
             Timer timer = new Timer();
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
                     adIndex++;
-                    PlayEvent playEvent = new PlayEvent("/sdcard/Advertising/json/demo" + (adIndex % 2 + 1) + ".json");
-                    EventBus.getDefault().post(playEvent);
-                    Log.d(TAG, "计算出当前应该播放的广告");
+                    if (adIndex % 2 == 0) {
+                        PlayEvent playEvent = new PlayEvent("/sdcard/Advertising/4303/config.json");
+                        EventBus.getDefault().post(playEvent);
+                        Log.d(TAG, "计算出当前应该播放的广告");
+                    } else {
+                        PlayEvent playEvent = new PlayEvent("/sdcard/Advertising/465/config.json");
+                        EventBus.getDefault().post(playEvent);
+                        Log.d(TAG, "计算出当前应该播放的广告");
+                    }
                 }
-            }, 1000, 5000);
-
-//            PlayEvent playEvent = new PlayEvent("/sdcard/Advertising/json/demo" + (adIndex % 2 + 1) + ".json");
-//            EventBus.getDefault().post(playEvent);
-//            try {
-//                Thread.sleep(5000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            playEvent = new PlayEvent("/sdcard/Advertising/json/demo" + (adIndex % 2 + 2) + ".json");
-//            EventBus.getDefault().post(playEvent);
+            }, 1000, 30 * 1000);
 
         }
     }
@@ -239,13 +240,15 @@ public class ADPlayerBackendService extends Service {
         instance = this;
         EventBus.getDefault().register(this);
         testDatabase();
-        /*
+        /**/
         bunchDir = new File("/sdcard", "Advertising");
         initDownloadListener();
         download(new String[]{
-                "http://192.168.1.4:8089/ad/player/program/452.zip",
-                "http://192.168.1.4:8089/ad/player/program/361.zip"
-        });*/
+//                "http://192.168.1.4:8089/ad/player/program/452.zip",
+//                "http://192.168.1.4:8089/ad/player/program/361.zip",
+                "http://192.168.1.4:8089/ad/player/program/465.zip",
+                "http://192.168.1.4:8089/ad/player/program/4303.zip"
+        });
 
         adminReceiver = new ComponentName(this.getApplicationContext(), ScreenOffAdminReceiver.class);
         mPowerManager = (PowerManager) getSystemService(POWER_SERVICE);

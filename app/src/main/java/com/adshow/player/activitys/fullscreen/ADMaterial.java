@@ -1,5 +1,6 @@
 package com.adshow.player.activitys.fullscreen;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ADMaterial {
@@ -16,7 +17,17 @@ public class ADMaterial {
 
     private float percentageRight;
 
-    private Map<String, Object> attrs;
+    private Map<String, Object> attrs = new HashMap<>();
+
+
+    public ADMaterial(String clazz, int index, float percentageTop, float percentageBottom, float percentageLeft, float percentageRight) {
+        this.clazz = clazz;
+        this.index = index;
+        this.percentageTop = percentageTop;
+        this.percentageBottom = percentageBottom;
+        this.percentageLeft = percentageLeft;
+        this.percentageRight = percentageRight;
+    }
 
     public String getClazz() {
         return clazz;

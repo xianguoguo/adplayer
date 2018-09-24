@@ -58,6 +58,7 @@ public class WeatherTextViewWrapper extends AppCompatTextView {
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 String responseString = response.body().string();
+                System.out.println("weather===> "+responseString);
                 WeatherResult weatherBean = new Gson().fromJson(responseString, WeatherResult.class);
                 StringBuilder weatherTextBuilder = new StringBuilder();
                 WeatherResult.DataBean.ForecastBean forecast = weatherBean.getData().getForecast().get(0);

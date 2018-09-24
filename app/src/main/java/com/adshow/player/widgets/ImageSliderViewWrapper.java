@@ -3,6 +3,7 @@ package com.adshow.player.widgets;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.adshow.player.R;
@@ -31,6 +32,7 @@ public class ImageSliderViewWrapper extends Banner {
 
     public ImageSliderViewWrapper(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.setId(View.generateViewId());
     }
 
 

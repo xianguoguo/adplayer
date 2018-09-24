@@ -4,6 +4,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.adshow.player.activitys.fullscreen.ADMaterial;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -80,7 +85,7 @@ public class FileUtils {
     /**
      * Helper function to load file from assets
      */
-    public static JSONObject readAdvertisingConfig(String filePath) throws JSONException {
+    public static List<ADMaterial> readAdvertisingConfig(String filePath) throws JSONException {
         StringBuilder returnString = new StringBuilder();
         InputStream fIn = null;
         InputStreamReader isr = null;
@@ -104,7 +109,9 @@ public class FileUtils {
                 e2.getMessage();
             }
         }
-        return new JSONObject(returnString.toString());
+
+        List<ADMaterial> jsonListObject = new Gson().fromJson(returnString.toString(), new TypeToken<List<ADMaterial>>(){}.getType());
+        return jsonListObject;
     }
 
     public static File getParentFile(@NonNull Context context) {
