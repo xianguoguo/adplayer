@@ -24,12 +24,5 @@ public class ExoVideoViewWrapper extends VideoView {
         this.setId(View.generateViewId());
         this.setScaleType(ScaleType.FIT_XY);
         this.setRepeatMode(Player.REPEAT_MODE_ALL);
-        VideoView videoView = this;
-        videoView.setOnPreparedListener(new OnPreparedListener() {
-            @Override
-            public void onPrepared() {
-                videoView.start();
-            }
-        });
     }
 }

@@ -92,8 +92,14 @@ public class PlayerActivity extends AppCompatActivity {
         imageViewObserverList.clear();
         imageViewList.clear();
         exoVideoPlayerObserver = null;
+        if (videoView != null) {
+            videoView.release();
+        }
         videoView = null;
         exoAudioPlayerObserver = null;
+        if (audioView != null) {
+            audioView.release();
+        }
         audioView = null;
         sliderView = null;
         scrollTextView = null;
@@ -102,7 +108,14 @@ public class PlayerActivity extends AppCompatActivity {
         for (ADMaterial material : materialList) {
             try {
                 if (Class.forName(material.getClazz()) == ExoVideoViewWrapper.class) {
-                    videoView = AppUtils.addExoVideoView(this, playerLayout, material);
+                    ExoVideoViewWrapper temp = AppUtils.addExoVideoView(this, playerLayout, material);
+                    if (temp.getVisibility() == View.INVISIBLE) {
+                        audioView = AppUtils.addExoVideoView(this, playerLayout, material);
+                        exoAudioPlayerObserver = new ExoVideoPlayerObserver(this, audioView);
+                    } else {
+                        videoView = AppUtils.addExoVideoView(this, playerLayout, material);
+                        exoVideoPlayerObserver = new ExoVideoPlayerObserver(this, videoView);
+                    }
                 }
                 if (Class.forName(material.getClazz()) == ImageSliderViewWrapper.class) {
                     sliderView = AppUtils.addImageSliderView(this, playerLayout, material);
@@ -128,9 +141,10 @@ public class PlayerActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        readyToPlay();
     }
 
-
+    /*
     private void initAdvertisingA(Bundle savedInstanceState) {
 
         List<ADMaterial> materialList = new ArrayList<>();
@@ -189,12 +203,18 @@ public class PlayerActivity extends AppCompatActivity {
         addViewByConfig(savedInstanceState, materialList);
     }
 
+    */
+
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    protected void readyToPlay() {
         if (exoVideoPlayerObserver != null) {
             exoVideoPlayerObserver.onStart();
         }
+
         if (exoAudioPlayerObserver != null) {
             exoAudioPlayerObserver.onStart();
         }
@@ -203,8 +223,8 @@ public class PlayerActivity extends AppCompatActivity {
         if (sliderView != null) {
             sliderView.startAutoPlay();
         }
-
     }
+
 
     @Override
     protected void onResume() {
