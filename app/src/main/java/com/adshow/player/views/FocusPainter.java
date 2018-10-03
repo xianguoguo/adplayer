@@ -59,16 +59,16 @@ public class FocusPainter {
             return;
         }
         if (mNinePatchDrawable != null) {
-            mNinePatchDrawable.setBounds(mFocusBoundHolder.getLeft() - mBorderPaddingRect.left,
-                    mFocusBoundHolder.getTop() - mBorderPaddingRect.top,
-                    mFocusBoundHolder.getLeft() + mFocusBoundHolder.getWidth() + mBorderPaddingRect.right,
-                    mFocusBoundHolder.getTop() + mFocusBoundHolder.getHeight() + mBorderPaddingRect.bottom);
+            mNinePatchDrawable.setBounds(mFocusBoundHolder.getLeft() - mBorderPaddingRect.left + 2,
+                    mFocusBoundHolder.getTop() - mBorderPaddingRect.top + 2,
+                    mFocusBoundHolder.getLeft() + mFocusBoundHolder.getWidth() + mBorderPaddingRect.right - 2,
+                    mFocusBoundHolder.getTop() + mFocusBoundHolder.getHeight() + mBorderPaddingRect.bottom - 2);
             mNinePatchDrawable.draw(canvas);
         } else {
-            mDrawable.setBounds(mFocusBoundHolder.getLeft(),
-                    mFocusBoundHolder.getTop(),
-                    mFocusBoundHolder.getLeft() + mFocusBoundHolder.getWidth(),
-                    mFocusBoundHolder.getTop() + mFocusBoundHolder.getHeight());
+            mDrawable.setBounds(mFocusBoundHolder.getLeft() + 2,
+                    mFocusBoundHolder.getTop() + 2,
+                    mFocusBoundHolder.getLeft() + mFocusBoundHolder.getWidth() - 2,
+                    mFocusBoundHolder.getTop() + mFocusBoundHolder.getHeight() - 2);
             mDrawable.draw(canvas);
         }
     }

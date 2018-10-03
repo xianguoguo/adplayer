@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
@@ -8,46 +9,323 @@
 
     <com.adshow.player.views.GameTitleView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dip"
         android:layout_marginTop="20dp" />
 
-
-    <RadioGroup
-        android:id="@+id/main_group"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/main_title_local"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/sel_local_service"
-            android:button="@null"
-            android:focusable="false" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/title_divider"
-            android:contentDescription=""
-            android:focusable="false" />
-
-        <RadioButton
-            android:id="@+id/main_title_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/sel_setting"
-            android:button="@null"
-            android:focusable="false" />
-
-    </RadioGroup>
-
-    <com.adshow.player.views.MyViewPager
-        android:id="@+id/main_viewpager"
+    <android.support.percent.PercentRelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="10dp" />
+        android:layout_marginBottom="30dp"
+        android:gravity="center|center_horizontal|center_vertical">
+
+        <com.adshow.player.views.FocusPercentRelativeLayout
+            android:id="@+id/focusLayout"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="2dp"
+            app:layout_heightPercent="70%"
+            app:layout_widthPercent="70%">
+
+            <android.support.percent.PercentRelativeLayout
+                android:id="@+id/playList"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:tag="com.himedia.mediacenterentrance|com.himedia.mediacenterentrance.MainActivity"
+
+                app:layout_heightPercent="50%"
+                app:layout_marginBottomPercent="0.0%"
+                app:layout_marginLeftPercent="0.0%"
+                app:layout_marginRightPercent="0.0%"
+                app:layout_marginTopPercent="0.0%"
+                app:layout_widthPercent="25%">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/royalblue"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/view1"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@mipmap/ic_movie" />
+
+                    <TextView
+                        android:id="@+id/playList_text"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="播放列表"
+                        android:textColor="@color/lightyellow"
+                        android:textSize="25sp" />
+                </RelativeLayout>
+            </android.support.percent.PercentRelativeLayout>
+
+
+            <android.support.percent.PercentRelativeLayout
+                android:id="@+id/downloadList"
+
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="240dp"
+                android:layout_toRightOf="@+id/playList"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:tag="com.hisilicon.android.mediacenter|com.hisilicon.android.mediacenter.activity.TabBarExample"
+                app:layout_heightPercent="50%"
+                app:layout_marginBottomPercent="0.0%"
+                app:layout_marginLeftPercent="0.0%"
+                app:layout_marginRightPercent="0.0%"
+                app:layout_marginTopPercent="0.0%"
+                app:layout_widthPercent="25%">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/darkorange"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/view2"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@mipmap/ic_filemaneger" />
+
+                    <TextView
+                        android:id="@+id/downloadList_text"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="本地存储"
+                        android:textColor="@color/lightyellow"
+                        android:textSize="25sp" />
+                </RelativeLayout>
+            </android.support.percent.PercentRelativeLayout>
+
+
+            <android.support.percent.PercentRelativeLayout
+                android:id="@+id/weatherSetting"
+
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/downloadList"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:tag="com.shafa.market|com.shafa.market.ShafaHomeAct"
+                app:layout_heightPercent="100%"
+                app:layout_marginBottomPercent="0.0%"
+                app:layout_marginLeftPercent="0.0%"
+                app:layout_marginRightPercent="0.0%"
+                app:layout_marginTopPercent="0.0%"
+                app:layout_widthPercent="25%">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blueviolet"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/view3"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@mipmap/ic_store" />
+
+                    <TextView
+                        android:id="@+id/weatherSetting_text"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="当前天气"
+                        android:textColor="@color/lightyellow"
+                        android:textSize="25sp" />
+                </RelativeLayout>
+
+
+            </android.support.percent.PercentRelativeLayout>
+
+            <android.support.percent.PercentRelativeLayout
+                android:id="@+id/systemLogin"
+
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_toRightOf="@+id/weatherSetting"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:tag="com.android.vending|com.android.vending.AssetBrowserActivity"
+                app:layout_heightPercent="50%"
+
+                app:layout_marginBottomPercent="0.0%"
+                app:layout_marginLeftPercent="0.0%"
+                app:layout_marginRightPercent="0.0%"
+                app:layout_marginTopPercent="0.0%"
+                app:layout_widthPercent="25%">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/darkturquoise"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/view4"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@mipmap/ic_allapps" />
+
+                    <TextView
+                        android:id="@+id/systemLogin_text"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="设备注册"
+                        android:textColor="@color/lightyellow"
+                        android:textSize="25sp" />
+
+                </RelativeLayout>
+
+
+            </android.support.percent.PercentRelativeLayout>
+
+            <android.support.percent.PercentRelativeLayout
+                android:id="@+id/play"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignBottom="@+id/weatherSetting"
+                android:layout_alignLeft="@+id/playList"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
+                android:tag="com.hitv.newappmanager|com.hitv.newappmanager.main.AppMainActivity"
+                app:layout_heightPercent="50%"
+                app:layout_marginBottomPercent="0.0%"
+                app:layout_marginLeftPercent="0.0%"
+                app:layout_marginRightPercent="0.0%"
+                app:layout_marginTopPercent="0.0%"
+                app:layout_widthPercent="50%">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/darkturquoise"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/view5"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@mipmap/ic_live" />
+
+                    <TextView
+                        android:id="@+id/play_text"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="播放"
+                        android:textColor="@color/lightyellow"
+                        android:textSize="25sp" />
+
+                </RelativeLayout>
+
+
+            </android.support.percent.PercentRelativeLayout>
+
+            <android.support.percent.PercentRelativeLayout
+                android:id="@+id/setting"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignBottom="@+id/weatherSetting"
+                android:layout_alignLeft="@+id/systemLogin"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
+                android:tag="com.android.hisiliconsetting|com.android.hisiliconsetting.MainActivity"
+                app:layout_heightPercent="50%"
+                app:layout_marginBottomPercent="0.0%"
+                app:layout_marginLeftPercent="0.0%"
+                app:layout_marginRightPercent="0.0%"
+                app:layout_marginTopPercent="0.0%"
+                app:layout_widthPercent="25%">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/purple"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/view6"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@mipmap/ic_settings" />
+
+                    <TextView
+                        android:id="@+id/setting_text"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="系统设置"
+                        android:textColor="@color/lightyellow"
+                        android:textSize="25sp" />
+
+                </RelativeLayout>
+
+
+            </android.support.percent.PercentRelativeLayout>
+
+        </com.adshow.player.views.FocusPercentRelativeLayout>
+
+
+    </android.support.percent.PercentRelativeLayout>
+
+
 </LinearLayout>
