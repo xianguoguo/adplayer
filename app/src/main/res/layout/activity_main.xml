@@ -15,7 +15,7 @@
     <android.support.percent.PercentRelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="50dp"
         android:gravity="center|center_horizontal|center_vertical">
 
         <com.adshow.player.views.FocusPercentRelativeLayout
@@ -52,8 +52,8 @@
 
                     <ImageView
                         android:id="@+id/view1"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:background="@mipmap/ic_movie" />
@@ -69,7 +69,7 @@
                         android:layout_marginLeft="10dp"
                         android:text="播放列表"
                         android:textColor="@color/lightyellow"
-                        android:textSize="25sp" />
+                        android:textSize="18sp" />
                 </RelativeLayout>
             </android.support.percent.PercentRelativeLayout>
 
@@ -100,8 +100,8 @@
 
                     <ImageView
                         android:id="@+id/view2"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:background="@mipmap/ic_filemaneger" />
@@ -117,7 +117,7 @@
                         android:layout_marginLeft="10dp"
                         android:text="本地存储"
                         android:textColor="@color/lightyellow"
-                        android:textSize="25sp" />
+                        android:textSize="18sp" />
                 </RelativeLayout>
             </android.support.percent.PercentRelativeLayout>
 
@@ -166,7 +166,7 @@
                         android:layout_marginLeft="10dp"
                         android:text="当前天气"
                         android:textColor="@color/lightyellow"
-                        android:textSize="25sp" />
+                        android:textSize="18sp" />
                 </RelativeLayout>
 
 
@@ -198,8 +198,8 @@
 
                     <ImageView
                         android:id="@+id/view4"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:background="@mipmap/ic_allapps" />
@@ -215,7 +215,7 @@
                         android:layout_marginLeft="10dp"
                         android:text="设备注册"
                         android:textColor="@color/lightyellow"
-                        android:textSize="25sp" />
+                        android:textSize="18sp" />
 
                 </RelativeLayout>
 
@@ -265,7 +265,7 @@
                         android:layout_marginLeft="10dp"
                         android:text="播放"
                         android:textColor="@color/lightyellow"
-                        android:textSize="25sp" />
+                        android:textSize="18sp" />
 
                 </RelativeLayout>
 
@@ -298,8 +298,8 @@
 
                     <ImageView
                         android:id="@+id/view6"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:background="@mipmap/ic_settings" />
@@ -315,7 +315,7 @@
                         android:layout_marginLeft="10dp"
                         android:text="系统设置"
                         android:textColor="@color/lightyellow"
-                        android:textSize="25sp" />
+                        android:textSize="18sp" />
 
                 </RelativeLayout>
 
