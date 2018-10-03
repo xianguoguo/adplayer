@@ -2,8 +2,8 @@
 <manifest package="com.adshow.player"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="17"
-    android:versionName="1.8.17">
+    android:versionCode="40"
+    android:versionName="1.10.40">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <user-permission android:name="android.permission.DEVICE_POWER"/>
