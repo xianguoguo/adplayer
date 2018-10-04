@@ -1,20 +1,12 @@
 package com.adshow.player.activitys.fullscreen;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.adshow.player.R;
+import com.adshow.player.activitys.BaseActivity;
 import com.adshow.player.event.MyEvent;
 import com.adshow.player.event.PlayEvent;
 import com.adshow.player.util.AppUtils;
@@ -25,25 +17,16 @@ import com.adshow.player.widgets.ImageSliderViewWrapper;
 import com.adshow.player.widgets.ImageViewWrapper;
 import com.adshow.player.widgets.ScrollTextViewWrapper;
 import com.adshow.player.widgets.WeatherTextViewWrapper;
-import com.devbrackets.android.exomedia.core.video.scale.ScaleType;
-import com.devbrackets.android.exomedia.listener.OnPreparedListener;
-import com.google.android.exoplayer2.Player;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
-public class PlayerActivity extends AppCompatActivity {
+public class PlayerActivity extends BaseActivity {
 
     private List<ImageViewObserver> imageViewObserverList = new ArrayList<>();
     private List<ImageViewWrapper> imageViewList = new ArrayList<>();
@@ -81,6 +64,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN, priority = 1)
     public void onReceivePlayEvent(PlayEvent event) throws JSONException {
+        AppUtils.shoot(this);
         Log.d("loadAdContent", "播放广告:" + event.advertisingPath);
         List<ADMaterial> materialList = FileUtils.readAdvertisingConfig(event.advertisingPath);
         addViewByConfig(savedInstanceState, materialList);

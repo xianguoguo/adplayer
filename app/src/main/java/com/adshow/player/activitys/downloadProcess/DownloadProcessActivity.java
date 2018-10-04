@@ -7,11 +7,12 @@ import android.util.Log;
 import android.view.View;
 
 import com.adshow.player.R;
+import com.adshow.player.activitys.BaseActivity;
 import com.adshow.player.event.MyEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
-public class DownloadProcessActivity extends AppCompatActivity {
+public class DownloadProcessActivity extends BaseActivity {
 
     private static final String TAG = "DownloadProcessActivity";
 

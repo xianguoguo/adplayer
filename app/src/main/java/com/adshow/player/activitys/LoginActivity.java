@@ -4,20 +4,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
 import com.adshow.player.R;
+import com.adshow.player.bean.UserToken;
 import com.adshow.player.service.ADPlayerBackendService;
 import com.adshow.player.service.request.LoginRequest;
 import com.adshow.player.service.response.RestResult;
+import com.adshow.player.util.DeviceUtil;
 import com.dd.processbutton.iml.ActionProcessButton;
+
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     ActionProcessButton loginButton;
     EditText usernameEditText;
@@ -37,6 +42,11 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (TextUtils.isEmpty(usernameEditText.getText().toString()) || TextUtils.isEmpty(passwordEditText.getText().toString())) {
+                    return;
+                }
+
                 usernameEditText.setEnabled(false);
                 passwordEditText.setEnabled(false);
                 loginButton.setEnabled(false);
@@ -47,14 +57,17 @@ public class LoginActivity extends AppCompatActivity {
                     public void run() {
                         try {
                             Thread.sleep(1000);
-                            Call<RestResult<Object>> call = ADPlayerBackendService.getInstance().getRestApi().login("mac", "admin", "123456");
+                            Call<RestResult<Object>> call = ADPlayerBackendService.getInstance().getRestApi().login(DeviceUtil.getDeviceInfo().getMac(), usernameEditText.getText().toString(), passwordEditText.getText().toString());
                             call.enqueue(new Callback<RestResult<Object>>() {
                                 @Override
                                 public void onResponse(Call<RestResult<Object>> call, Response<RestResult<Object>> response) {
                                     loginButton.setProgress(50);
                                     RestResult<Object> restResponse = response.body();
                                     System.out.println(restResponse);
-                                    ADPlayerBackendService.getInstance().setAccessToken(restResponse.result.toString());
+                                    UserToken userToken = new UserToken();
+                                    userToken.setAccessToken(restResponse.result.toString());
+                                    userToken.setExpiresIn(new Date(System.currentTimeMillis() + 15 * 60 * 60 * 24 * 1000));
+                                    DeviceUtil.setUserToken(userToken);
                                     new Runnable() {
                                         @Override
                                         public void run() {

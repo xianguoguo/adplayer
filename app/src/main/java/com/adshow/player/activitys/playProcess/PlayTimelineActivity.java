@@ -11,8 +11,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.adshow.player.R;
+import com.adshow.player.activitys.BaseActivity;
 
-public class PlayTimelineActivity extends AppCompatActivity {
+public class PlayTimelineActivity extends BaseActivity {
 
 
     private int mOffset = 0;

@@ -1,14 +1,23 @@
 package com.adshow.player.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.os.Environment;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.constraint.Guideline;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.adshow.player.activitys.fullscreen.ADMaterial;
 import com.adshow.player.widgets.DateTimeTextViewWrapper;
@@ -18,10 +27,25 @@ import com.adshow.player.widgets.ImageViewWrapper;
 import com.adshow.player.widgets.ScrollTextViewWrapper;
 import com.adshow.player.widgets.WeatherTextViewWrapper;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.zip.CRC32;
 
 public class AppUtils {
 
@@ -30,27 +54,6 @@ public class AppUtils {
     public static int dp2px(Context context, float dipValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
-    }
-
-    public static String getMacAddress(Context context) {
-        String macAddress = null;
-        if (context != null) {
-            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-            if (mNetworkInfo != null && mNetworkInfo.isAvailable()) {
-                int type = mNetworkInfo.getType();
-                if (type == ConnectivityManager.TYPE_ETHERNET) {
-
-//                    EthernetManager mEthManager = (EthernetManager)context.getSystemService(Context.ETHERNET_SERVICE);
-//                    macAddress = mEthManager.getDevInfo().getHwaddr().toUpperCase();
-                } else if (type == ConnectivityManager.TYPE_WIFI) {
-                    WifiManager mWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-                    macAddress = mWifiManager.getConnectionInfo().getMacAddress().toUpperCase();
-                }
-            }
-        }
-        return macAddress;
     }
 
 
@@ -194,4 +197,105 @@ public class AppUtils {
         guideline.setId(View.generateViewId());
         return guideline;
     }
+
+    
+    public static String getFileMD5(File updateFile) {
+        MessageDigest digest;
+        try {
+            digest = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            return "";
+        }
+
+        InputStream is;
+        try {
+            is = new FileInputStream(updateFile);
+        } catch (FileNotFoundException e) {
+            return "";
+        }
+
+        byte[] buffer = new byte[8192]; //8x1024 = 8MB
+        int read;
+        try {
+            while ((read = is.read(buffer)) > 0) {
+                digest.update(buffer, 0, read);
+            }
+            byte[] md5sum = digest.digest();
+            BigInteger bigInt = new BigInteger(1, md5sum);
+            String output = bigInt.toString(16);
+            // Fill to 32 chars
+            output = String.format("%32s", output).replace(' ', '0');
+            return output;
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to process file for MD5", e);
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+            }
+        }
+    }
+
+
+    private static Bitmap takeScreenShot(Activity activity) {
+        // View是你需要截图的View
+        View view = activity.getWindow().getDecorView();
+        view.setDrawingCacheEnabled(true);
+        view.buildDrawingCache();
+        Bitmap b1 = view.getDrawingCache();
+
+        // 获取状态栏高度
+        Rect frame = new Rect();
+        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        int statusBarHeight = frame.top;
+        Log.i("TAG", "" + statusBarHeight);
+
+        // 获取屏幕长和高
+        int width = activity.getWindowManager().getDefaultDisplay().getWidth();
+        int height = activity.getWindowManager().getDefaultDisplay()
+                .getHeight();
+        // 去掉标题栏
+        // Bitmap b = Bitmap.createBitmap(b1, 0, 25, 320, 455);
+        Bitmap b = Bitmap.createBitmap(b1, 0, statusBarHeight, width, height
+                - statusBarHeight);
+        view.destroyDrawingCache();
+        return b;
+    }
+
+    // 保存到sdcard
+    private static void savePic(Bitmap b, String strFileName) {
+        FileOutputStream fos = null;
+        try {
+            File file = new File(strFileName);
+            //获取父目录
+            File fileParent = file.getParentFile();
+            //判断是否存在
+            if (!fileParent.exists()) {
+//                创建父目录文件
+                fileParent.mkdirs();
+            }
+            file.createNewFile();
+            fos = new FileOutputStream(new File(strFileName));
+            if (null != fos) {
+                b.compress(Bitmap.CompressFormat.PNG, 90, fos);
+                fos.flush();
+                fos.close();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // 程序入口,截屏
+    public static void shoot(Activity a) {
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String fileName = df.format(date) + ".png";
+        String filePath = "/sdcard/Advertising/Screenshots" + File.separator + fileName;
+        savePic(takeScreenShot(a), filePath);
+    }
+
 }

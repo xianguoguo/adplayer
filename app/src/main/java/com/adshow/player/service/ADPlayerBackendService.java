@@ -11,17 +11,24 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.adshow.player.activitys.schedule.ScreenOffAdminReceiver;
 import com.adshow.player.bean.Advertising;
+import com.adshow.player.bean.DeviceInfo;
 import com.adshow.player.bean.History;
 import com.adshow.player.bean.Schedule;
+import com.adshow.player.bean.UserToken;
 import com.adshow.player.event.MyEvent;
 import com.adshow.player.event.PlayEvent;
+import com.adshow.player.util.AppUtils;
 import com.adshow.player.util.DaoManager;
+import com.adshow.player.util.DeviceUtil;
 import com.adshow.player.util.FileUtils;
+import com.adshow.player.util.SharedUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.liulishuo.okdownload.DownloadContext;
@@ -54,13 +61,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ADPlayerBackendService extends Service {
     private static final String TAG = "ADPlayerBackendService";
-
     private File bunchDir;
     private int totalCount;
     private int currentCount;
     private DownloadListener listener;
     private DownloadContext downloadContext;
-    private String accessToken;
+    private UserToken userToken;
 
     private static ADPlayerBackendService instance;
 
@@ -68,9 +74,6 @@ public class ADPlayerBackendService extends Service {
         return instance;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
 
     public OkHttpClient genericClient() {
         OkHttpClient httpClient = new OkHttpClient.Builder()
@@ -79,13 +82,12 @@ public class ADPlayerBackendService extends Service {
                     public Response intercept(Interceptor.Chain chain) throws IOException {
                         Request.Builder builder = chain.request()
                                 .newBuilder();
-                        if (accessToken != null && accessToken.length() > 0) {
-                            builder.addHeader("accessToken", "gzip, deflate");
+                        if (DeviceUtil.getUserToken() != null && !TextUtils.isEmpty(DeviceUtil.getUserToken().getAccessToken())) {
+                            builder.addHeader("accessToken", DeviceUtil.getUserToken().getAccessToken());
                         }
                         builder.addHeader("Accept-Encoding", "gzip, deflate")
                                 .addHeader("Connection", "keep-alive")
                                 .addHeader("Accept", "*/*");
-
                         return chain.proceed(builder.build());
                     }
                 })
@@ -201,6 +203,8 @@ public class ADPlayerBackendService extends Service {
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
+
+
                     adIndex++;
                     if (adIndex % 2 == 0) {
                         PlayEvent playEvent = new PlayEvent("/sdcard/Advertising/4303/config.json");
@@ -232,12 +236,31 @@ public class ADPlayerBackendService extends Service {
     private DevicePolicyManager policyManager;
     private ComponentName adminReceiver;
     private PowerManager mPowerManager;
+    private WindowManager mWindowManager;
     private PowerManager.WakeLock mWakeLock;
+
+
+    public WindowManager getWindowManager() {
+        return mWindowManager;
+    }
+
+    public void setWindowManager(WindowManager windowManager) {
+        this.mWindowManager = windowManager;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        mPowerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        policyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+
+        DeviceInfo deviceInfo = DeviceUtil.getDeviceInfo();
+        System.out.println(new Gson().toJson(deviceInfo));
+
+
         EventBus.getDefault().register(this);
         testDatabase();
         /**/
@@ -251,9 +274,6 @@ public class ADPlayerBackendService extends Service {
         });
 
         adminReceiver = new ComponentName(this.getApplicationContext(), ScreenOffAdminReceiver.class);
-        mPowerManager = (PowerManager) getSystemService(POWER_SERVICE);
-        policyManager = (DevicePolicyManager) this.getApplicationContext().getSystemService(Context.DEVICE_POLICY_SERVICE);
-
         boolean admin = policyManager.isAdminActive(adminReceiver);
         if (admin) {
             policyManager.lockNow();
@@ -355,7 +375,8 @@ public class ADPlayerBackendService extends Service {
                                 @android.support.annotation.Nullable Exception realCause,
                                 @NonNull Listener1Assist.Listener1Model model) {
                 Log.e(TAG, "taskEnd= " + task + " end " + cause);
-
+                String md5 = AppUtils.getFileMD5(task.getFile());
+                System.out.println("md5 is: " + md5);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {

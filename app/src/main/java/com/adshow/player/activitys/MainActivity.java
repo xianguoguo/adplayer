@@ -1,25 +1,27 @@
 package com.adshow.player.activitys;
 
-import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.percent.PercentRelativeLayout;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.adshow.player.R;
 import com.adshow.player.activitys.app.AppAutoRun;
 import com.adshow.player.activitys.downloadProcess.DownloadProcessActivity;
 import com.adshow.player.activitys.fullscreen.PlayerActivity;
 import com.adshow.player.activitys.playProcess.PlayTimelineActivity;
-import com.adshow.player.activitys.schedule.ScreenOffAdminReceiver;
 import com.adshow.player.service.ADPlayerBackendService;
+import com.adshow.player.service.response.RestResult;
+import com.adshow.player.util.DeviceUtil;
 import com.adshow.player.views.FocusPercentRelativeLayout;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
 
@@ -57,45 +59,82 @@ public class MainActivity extends BaseActivity {
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent jumpIntent;
-                switch (v.getId()) {
-                    case R.id.playList:
-                        jumpIntent = new Intent(context, PlayTimelineActivity.class);
-                        startActivity(jumpIntent);
-                        break;
-                    case R.id.downloadList:
-                        jumpIntent = new Intent(context, DownloadProcessActivity.class);
-                        startActivity(jumpIntent);
-                        break;
-                    case R.id.play:
-                        jumpIntent = new Intent(context, PlayerActivity.class);
-                        startActivity(jumpIntent);
-                        break;
-                    case R.id.weatherSetting:
-//                jumpIntent = new Intent(context, GarbageClear.class);
-//                startActivity(jumpIntent);
-                        break;
-//            case R.id.connectTesting:
-//                jumpIntent = new Intent(context, SpeedTestActivity.class);
-//                startActivity(jumpIntent);
-//                break;
-//            case R.id.garbageClear:
-//                jumpIntent = new Intent(context, GarbageClear.class);
-//                startActivity(jumpIntent);
-//                break;
-                    case R.id.setting:
-                        jumpIntent = new Intent(context, AppAutoRun.class);
-                        startActivity(jumpIntent);
-                        break;
-                    case R.id.systemLogin:
-                        jumpIntent = new Intent(context, LoginActivity.class);
-                        startActivity(jumpIntent);
-                        break;
-//            case R.id.aboutUs:
-//                jumpIntent = new Intent(context, AppAutoRun.class);
-//                startActivity(jumpIntent);
-//                break;
+
+                if (v.getId() != R.id.systemLogin && ADPlayerBackendService.getInstance() != null && ADPlayerBackendService.getInstance().getWindowManager() != null) {
+                    if (DeviceUtil.getUserToken() == null || TextUtils.isEmpty(DeviceUtil.getUserToken().getAccessToken())
+                            || (DeviceUtil.getUserToken().getExpiresIn().getTime() - System.currentTimeMillis()) / (60 * 60 * 24 * 1000) < 7) {
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        startActivity(intent);
+                        return;
+                    }
+
+                    Call<RestResult<Object>> call = ADPlayerBackendService.getInstance().getRestApi().validateToken();
+                    call.enqueue(new Callback<RestResult<Object>>() {
+                        @Override
+                        public void onResponse(Call<RestResult<Object>> call, Response<RestResult<Object>> response) {
+                            System.out.println("accessToken 校验成功");
+                            Intent jumpIntent;
+                            switch (v.getId()) {
+                                case R.id.playList:
+                                    jumpIntent = new Intent(context, PlayTimelineActivity.class);
+                                    startActivity(jumpIntent);
+                                    break;
+                                case R.id.downloadList:
+                                    jumpIntent = new Intent(context, DownloadProcessActivity.class);
+                                    startActivity(jumpIntent);
+                                    break;
+                                case R.id.play:
+                                    jumpIntent = new Intent(context, PlayerActivity.class);
+                                    startActivity(jumpIntent);
+                                    break;
+//                                case R.id.weatherSetting:
+//                                    jumpIntent = new Intent(context, GarbageClear.class);
+//                                    startActivity(jumpIntent);
+//                                    break;
+//                                case R.id.connectTesting:
+//                                    jumpIntent = new Intent(context, SpeedTestActivity.class);
+//                                    startActivity(jumpIntent);
+//                                    break;
+//                                case R.id.garbageClear:
+//                                    jumpIntent = new Intent(context, GarbageClear.class);
+//                                    startActivity(jumpIntent);
+//                                    break;
+                                case R.id.setting:
+                                    jumpIntent = new Intent(context, AppAutoRun.class);
+                                    startActivity(jumpIntent);
+                                    break;
+                                case R.id.systemLogin:
+                                    jumpIntent = new Intent(context, LoginActivity.class);
+                                    startActivity(jumpIntent);
+                                    break;
+//                                case R.id.aboutUs:
+//                                    jumpIntent = new Intent(context, AppAutoRun.class);
+//                                    startActivity(jumpIntent);
+//                                    break;
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<RestResult<Object>> call, Throwable t) {
+                            System.out.println("accessToken 校验失败");
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1000);
+                                        Intent intent = new Intent(mContext, LoginActivity.class);
+                                        startActivity(intent);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }.run();
+                        }
+                    });
+                    return;
                 }
+
+
             }
         };
 
@@ -107,16 +146,6 @@ public class MainActivity extends BaseActivity {
         for (TextView text : clickTexts) {
             text.setTypeface(typeface);
         }
-
-
-        Intent intent = new Intent(this, ADPlayerBackendService.class);
-        startService(intent);
-
-        intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, new ComponentName(this.getApplicationContext(), ScreenOffAdminReceiver.class));
-        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "开启后就可以使用锁屏功能了...");
-        startActivityForResult(intent, 0);
-
 
     }
 

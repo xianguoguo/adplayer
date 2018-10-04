@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.adshow.player.R;
+import com.adshow.player.activitys.BaseActivity;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
@@ -51,7 +52,7 @@ import butterknife.ButterKnife;
 
 import static com.youth.banner.BannerConfig.NOT_INDICATOR;
 
-public class FullScreenPlayActivity extends AppCompatActivity {
+public class FullScreenPlayActivity extends BaseActivity {
     private static final String KEY_PLAY_WHEN_READY = "play_when_ready";
     private static final String KEY_WINDOW = "window";
     private static final String KEY_POSITION = "position";

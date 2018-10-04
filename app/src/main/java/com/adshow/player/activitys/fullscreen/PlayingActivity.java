@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.adshow.player.activitys.BaseActivity;
 import com.adshow.player.event.MyEvent;
 import com.adshow.player.event.PlayEvent;
 import com.adshow.player.util.FileUtils;
@@ -17,7 +18,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PlayingActivity extends AppCompatActivity {
+public class PlayingActivity extends BaseActivity {
 
 
     @Override

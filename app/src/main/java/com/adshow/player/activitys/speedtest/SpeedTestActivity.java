@@ -17,8 +17,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.adshow.player.R;
+import com.adshow.player.activitys.BaseActivity;
 
-public class SpeedTestActivity extends AppCompatActivity implements OnClickListener {
+public class SpeedTestActivity extends BaseActivity implements OnClickListener {
     private Button DidNotStart;//未开始
     private Button InStart;//已开始
     private Button StartAgain;//再次开始
