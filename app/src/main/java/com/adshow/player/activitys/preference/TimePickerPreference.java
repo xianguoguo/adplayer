@@ -26,7 +26,7 @@ public class TimePickerPreference extends DialogPreference {
         super(ctxt, attrs);
 
         setPositiveButtonText(ctxt.getString(R.string.time_picker_set));
-        setNegativeButtonText(ctxt.getString(R.string.time_picker_cancel));
+        setNegativeButtonText(null);
     }
 
     @Override

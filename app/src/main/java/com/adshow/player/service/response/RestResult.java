@@ -26,6 +26,22 @@ public class RestResult<T> {
 
     public T result;
 
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public T getResult() {
+        return result;
+    }
+
     @Override
     public String toString() {
         return "Result{" +

@@ -211,7 +211,7 @@ public class ADPlayerBackendService extends Service {
                         EventBus.getDefault().post(playEvent);
                         Log.d(TAG, "计算出当前应该播放的广告");
                     } else {
-                        PlayEvent playEvent = new PlayEvent("/sdcard/Advertising/465/config.json");
+                        PlayEvent playEvent = new PlayEvent("/sdcard/Advertising/60487748829581312/config.json");
                         EventBus.getDefault().post(playEvent);
                         Log.d(TAG, "计算出当前应该播放的广告");
                     }
@@ -269,8 +269,9 @@ public class ADPlayerBackendService extends Service {
         download(new String[]{
 //                "http://192.168.1.4:8089/ad/player/program/452.zip",
 //                "http://192.168.1.4:8089/ad/player/program/361.zip",
-                "http://192.168.1.4:8089/ad/player/program/465.zip",
-                "http://192.168.1.4:8089/ad/player/program/4303.zip"
+//                "http://192.168.1.4:8089/ad/player/program/465.zip",
+//                "http://192.168.1.4:8089/ad/player/program/4303.zip"
+                "http://192.168.1.4:8089/ad/program/download/60487748829581312.zip"
         });
 
         adminReceiver = new ComponentName(this.getApplicationContext(), ScreenOffAdminReceiver.class);
@@ -286,7 +287,16 @@ public class ADPlayerBackendService extends Service {
             Toast.makeText(getApplicationContext(), "没有设备管理权限", Toast.LENGTH_LONG);
         }
 
+        String uniqueId = DeviceUtil.getUniqueDeviceId(this.getApplicationContext());
+
+        MQTTManager.getInstance().connect(MQTTManager.URL, MQTTManager.userName, MQTTManager.password, MQTTManager.clientId);
+        //MQTTManager.getInstance().subscribe(TOPIC, 2);
+        MQTTManager.getInstance().publish(MQTTManager.PUB_TOPIC_RUNNING, 2, "running".getBytes());
     }
+
+
+
+
 
     public void turnOnScreen() {
         // turn on screen

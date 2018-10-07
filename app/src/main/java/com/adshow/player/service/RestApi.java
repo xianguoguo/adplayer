@@ -15,7 +15,13 @@ public interface RestApi {
     @FormUrlEncoded
     @POST("/auth/login")
     @Headers("Content-Type:application/x-www-form-urlencoded; charset=utf-8")
-    Call<RestResult<Object>> login(@Header("Device-Mac") String mac, @Field("username") String username, @Field("password") String password);
+    Call<RestResult<Object>> login(
+            @Header("DEV-ID") String id,
+            @Header("DEV-IP") String ip,
+            @Header("DEV-MAC") String mac,
+            @Header("DEV-RESOLUTION") String resolution,
+            @Header("DEV-VERSION") String version,
+            @Field("username") String username, @Field("password") String password);
 
 
     @GET("/ad/player/validateToken")

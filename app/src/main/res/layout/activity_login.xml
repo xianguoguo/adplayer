@@ -85,7 +85,7 @@
                 app:pb_colorPressed="@color/blue_pressed"
                 app:pb_colorProgress="@color/purple_progress"
                 app:pb_textComplete="登陆成功"
-                app:pb_textProgress="登陆中..." />
+                app:pb_textProgress="提交中..." />
 
         </LinearLayout>
     </LinearLayout>

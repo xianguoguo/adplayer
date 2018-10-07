@@ -13,7 +13,9 @@ import android.widget.Toast;
 import com.adshow.player.activitys.schedule.ScreenOffAdminReceiver;
 import com.adshow.player.bean.DeviceInfo;
 import com.adshow.player.bean.UserToken;
+import com.adshow.player.bean.status.RunningStatus;
 import com.adshow.player.service.ADPlayerBackendService;
+import com.adshow.player.service.MQTTManager;
 import com.adshow.player.service.response.RestResult;
 import com.adshow.player.util.DeviceUtil;
 import com.google.gson.Gson;
@@ -37,6 +39,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RunningStatus runningStatus = new RunningStatus();
+        runningStatus.setBootTime(new Date());
+        runningStatus.setShutdownTime(new Date());
+        MQTTManager.getInstance().publish(MQTTManager.PUB_TOPIC_RUNNING, 2, new Gson().toJson(runningStatus).getBytes());
         Intent intent = new Intent(this, ADPlayerBackendService.class);
         startService(intent);
         intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);

@@ -5,6 +5,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -12,12 +13,15 @@ import android.content.res.TypedArray;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.adshow.player.bean.DeviceInfo;
+import com.adshow.player.bean.UserLogin;
 import com.adshow.player.bean.UserToken;
 import com.adshow.player.service.ADPlayerBackendService;
 import com.google.gson.Gson;
@@ -26,10 +30,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.UUID;
 
 public class DeviceUtil {
+
+    private static final String TAG = "DeviceUtils";
 
     static DecimalFormat df = new DecimalFormat("0.00");
 
@@ -43,28 +53,21 @@ public class DeviceUtil {
      */
     public static String getScreenInfo(WindowManager windowManager) {
 
-        String screenInfo;
-
         DisplayMetrics metrics = new DisplayMetrics();
-        /**
-         * getRealMetrics - 屏幕的原始尺寸，即包含状态栏。
-         * version >= 4.2.2
-         */
+
         windowManager.getDefaultDisplay().getRealMetrics(metrics);
 
         int screenHeight = metrics.heightPixels;
 
         int screenWidth = metrics.widthPixels;
 
-        String resolution = screenHeight + "×" + screenWidth;
+        String resolution = screenWidth + "*" + screenHeight;
 
-        float density = metrics.density;        // 屏幕密度（0.75 / 1.0 / 1.5）
+        //float density = metrics.density;        // 屏幕密度（0.75 / 1.0 / 1.5）
+        //int densityDpi = metrics.densityDpi;    // 屏幕DPI（120 / 160 / 240）
+        //screenInfo = "分辨率:" + resolution + " 屏幕密度:" + density + " DPI:" + densityDpi;
 
-        int densityDpi = metrics.densityDpi;    // 屏幕DPI（120 / 160 / 240）
-
-        screenInfo = "分辨率:" + resolution + " 屏幕密度:" + density + " DPI:" + densityDpi;
-
-        return screenInfo;
+        return resolution;
     }
 
 
@@ -384,6 +387,7 @@ public class DeviceUtil {
 
 
     public static DeviceInfo getDeviceInfo() {
+        //SharedUtil.deleteItem(ADPlayerBackendService.getInstance().getApplicationContext(), "deviceInfo");
         Gson gson = new Gson();
         Context context = ADPlayerBackendService.getInstance().getApplicationContext();
         DeviceInfo info = new DeviceInfo();
@@ -391,6 +395,9 @@ public class DeviceUtil {
             info = new Gson().fromJson(SharedUtil.getString(context, "deviceInfo", null), DeviceInfo.class);
         } else {
             info = new DeviceInfo();
+
+            info.setId(DeviceUtil.getUniqueDeviceId(context));
+
             info.setIp(DeviceUtil.getWiFiInfo(context)[1]);
             info.setMac(DeviceUtil.getWiFiInfo(context)[2]);
             info.setResolution(getScreenInfo(ADPlayerBackendService.getInstance().getWindowManager()));
@@ -402,11 +409,12 @@ public class DeviceUtil {
         }
 
         return info;
-
-
     }
 
     public static void setUserToken(UserToken userToken) {
+        if (userToken == null) {
+            SharedUtil.deleteItem(ADPlayerBackendService.getInstance().getApplicationContext(), "userToken");
+        }
         Gson gson = new Gson();
         SharedUtil.putString(ADPlayerBackendService.getInstance().getApplicationContext(), "userToken", gson.toJson(userToken));
     }
@@ -414,10 +422,107 @@ public class DeviceUtil {
     public static UserToken getUserToken() {
         Gson gson = new Gson();
         String userTokenString = SharedUtil.getString(ADPlayerBackendService.getInstance().getApplicationContext(), "userToken", null);
-        if(TextUtils.isEmpty(userTokenString)){
+        if (TextUtils.isEmpty(userTokenString)) {
             return null;
         }
         return gson.fromJson(userTokenString, UserToken.class);
+    }
+
+    public static void setUserLogin(UserLogin userLogin) {
+        Gson gson = new Gson();
+        SharedUtil.putString(ADPlayerBackendService.getInstance().getApplicationContext(), "userLogin", gson.toJson(userLogin));
+    }
+
+    public static UserLogin getUserLogin() {
+        Gson gson = new Gson();
+        String userLoginString = SharedUtil.getString(ADPlayerBackendService.getInstance().getApplicationContext(), "userLogin", null);
+        if (TextUtils.isEmpty(userLoginString)) {
+            return null;
+        }
+        return gson.fromJson(userLoginString, UserLogin.class);
+    }
+
+    @SuppressLint("MissingPermission")
+    public static String getUniqueDeviceId(Context context) {
+        Context ctx = context.getApplicationContext();
+        if (ctx == null) {
+            ctx = context;
+        } else {
+            ctx = ((Application) ctx).getBaseContext();
+        }
+
+        String uniqueId = SharedUtil.getString(context, "devUniqueId", null);
+        if (!TextUtils.isEmpty(uniqueId)) {
+            Log.i(TAG, "读取到唯一设备ID：" + uniqueId);
+            return uniqueId;
+        }
+        StringBuilder sb = new StringBuilder();
+
+        TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
+        String deviceId = "";
+        if (tm != null) {
+            deviceId = tm.getDeviceId();
+            if (!TextUtils.isEmpty(deviceId)) {
+                sb.append(deviceId);
+            }
+        }
+        String androidId = Settings.Secure.getString(ctx.getContentResolver(), Settings.Secure.ANDROID_ID);
+        if (!TextUtils.isEmpty(androidId)) {
+            sb.append(androidId);
+        }
+
+        if ((TextUtils.isEmpty(androidId) || androidId.equals("9774d56d682e549c") || androidId.equals("0000000000000"))
+                && TextUtils.isEmpty(deviceId)) {
+            sb.append(UUID.randomUUID().toString());//随机生成UUID
+        }
+
+        sb.append(android.os.Build.BOARD);//获取设备基板名称
+        sb.append(android.os.Build.BOOTLOADER);//获取设备引导程序版本号
+        sb.append(android.os.Build.BRAND);//获取设备品牌
+        sb.append(android.os.Build.CPU_ABI);//获取设备指令集名称（CPU的类型）
+        sb.append(android.os.Build.CPU_ABI2);//获取第二个指令集名称
+        sb.append(android.os.Build.DEVICE);//获取设备驱动名称
+        sb.append(android.os.Build.DISPLAY);//获取设备显示的版本包（在系统设置中显示为版本号）和ID一样
+        sb.append(android.os.Build.FINGERPRINT);//设备的唯一标识。由设备的多个信息拼接合成。
+        sb.append(android.os.Build.HARDWARE);//设备硬件名称,一般和基板名称一样（BOARD）
+        sb.append(android.os.Build.ID);//设备版本号。
+        sb.append(android.os.Build.MODEL);//获取手机的型号 设备名称。
+        sb.append(android.os.Build.MANUFACTURER);//获取设备制造商
+        sb.append(android.os.Build.PRODUCT);//整个产品的名称
+        sb.append(android.os.Build.TAGS);//设备标签。如release-keys 或测试的 test-keys
+        sb.append(android.os.Build.TYPE);//设备版本类型 主要为 "user" 或 "eng".
+        sb.append(android.os.Build.USER);//设备用户名 基本上都为android -build
+        sb.append(android.os.Build.VERSION.RELEASE);//获取系统版本字符串。如4.1.2 或2.2 或2.3等
+        sb.append(android.os.Build.VERSION.CODENAME);//设备当前的系统开发代号，一般使用REL代替
+        sb.append(android.os.Build.VERSION.INCREMENTAL);//系统源代码控制值，一个数字或者git hash值
+        sb.append(android.os.Build.VERSION.SDK_INT);//系统的API级别 数字表示
+        sb.append(android.os.Build.SERIAL);
+
+        uniqueId = md5(sb.toString().trim().toUpperCase());
+        Log.i(TAG, "生成唯一设备ID：" + uniqueId);
+        SharedUtil.putString(context, "devUniqueId", uniqueId);
+        return uniqueId;
+    }
+
+
+    private static String md5(String str) {
+        byte[] hash;
+        try {
+            hash = MessageDigest.getInstance("MD5").digest(str.getBytes("UTF-8"));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
+        StringBuilder hex = new StringBuilder(hash.length * 2);
+        for (byte b : hash) {
+            if ((b & 0xFF) < 0x10)
+                hex.append("0");
+            hex.append(Integer.toHexString(b & 0xFF));
+        }
+        return hex.toString().toUpperCase();
     }
 
 }

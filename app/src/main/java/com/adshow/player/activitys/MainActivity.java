@@ -26,6 +26,7 @@ import retrofit2.Response;
 public class MainActivity extends BaseActivity {
 
     private FocusPercentRelativeLayout layout;
+
     private Context context;
 
     private TextView[] clickTexts;
@@ -60,33 +61,46 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if (v.getId() != R.id.systemLogin && ADPlayerBackendService.getInstance() != null && ADPlayerBackendService.getInstance().getWindowManager() != null) {
-                    if (DeviceUtil.getUserToken() == null || TextUtils.isEmpty(DeviceUtil.getUserToken().getAccessToken())
-                            || (DeviceUtil.getUserToken().getExpiresIn().getTime() - System.currentTimeMillis()) / (60 * 60 * 24 * 1000) < 7) {
-                        Intent intent = new Intent(context, LoginActivity.class);
-                        startActivity(intent);
-                        return;
-                    }
+                if (v.getId() == R.id.systemLogin) {
+                    startActivity(new Intent(context, LoginActivity.class));
+                    return;
+                }
 
-                    Call<RestResult<Object>> call = ADPlayerBackendService.getInstance().getRestApi().validateToken();
-                    call.enqueue(new Callback<RestResult<Object>>() {
-                        @Override
-                        public void onResponse(Call<RestResult<Object>> call, Response<RestResult<Object>> response) {
-                            System.out.println("accessToken 校验成功");
-                            Intent jumpIntent;
-                            switch (v.getId()) {
-                                case R.id.playList:
-                                    jumpIntent = new Intent(context, PlayTimelineActivity.class);
-                                    startActivity(jumpIntent);
-                                    break;
-                                case R.id.downloadList:
-                                    jumpIntent = new Intent(context, DownloadProcessActivity.class);
-                                    startActivity(jumpIntent);
-                                    break;
-                                case R.id.play:
-                                    jumpIntent = new Intent(context, PlayerActivity.class);
-                                    startActivity(jumpIntent);
-                                    break;
+                if (ADPlayerBackendService.getInstance() == null || ADPlayerBackendService.getInstance().getWindowManager() == null) {
+                    return;
+                }
+
+                if (DeviceUtil.getUserToken() == null || TextUtils.isEmpty(DeviceUtil.getUserToken().getAccessToken())
+                        || (DeviceUtil.getUserToken().getExpiresIn().getTime() - System.currentTimeMillis()) / (60 * 60 * 24 * 1000) < 7) {
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    startActivity(intent);
+                    return;
+                }
+
+                Call<RestResult<Object>> call = ADPlayerBackendService.getInstance().getRestApi().validateToken();
+                call.enqueue(new Callback<RestResult<Object>>() {
+                    @Override
+                    public void onResponse(Call<RestResult<Object>> call, Response<RestResult<Object>> response) {
+                        if (!response.body().isSuccess()) {
+                            startActivity(new Intent(context, LoginActivity.class));
+                            return;
+                        }
+
+                        System.out.println("accessToken 校验成功");
+                        Intent jumpIntent;
+                        switch (v.getId()) {
+                            case R.id.playList:
+                                jumpIntent = new Intent(context, PlayTimelineActivity.class);
+                                startActivity(jumpIntent);
+                                break;
+                            case R.id.downloadList:
+                                jumpIntent = new Intent(context, DownloadProcessActivity.class);
+                                startActivity(jumpIntent);
+                                break;
+                            case R.id.play:
+                                jumpIntent = new Intent(context, PlayerActivity.class);
+                                startActivity(jumpIntent);
+                                break;
 //                                case R.id.weatherSetting:
 //                                    jumpIntent = new Intent(context, GarbageClear.class);
 //                                    startActivity(jumpIntent);
@@ -99,42 +113,35 @@ public class MainActivity extends BaseActivity {
 //                                    jumpIntent = new Intent(context, GarbageClear.class);
 //                                    startActivity(jumpIntent);
 //                                    break;
-                                case R.id.setting:
-                                    jumpIntent = new Intent(context, AppAutoRun.class);
-                                    startActivity(jumpIntent);
-                                    break;
-                                case R.id.systemLogin:
-                                    jumpIntent = new Intent(context, LoginActivity.class);
-                                    startActivity(jumpIntent);
-                                    break;
+                            case R.id.setting:
+                                jumpIntent = new Intent(context, AppAutoRun.class);
+                                startActivity(jumpIntent);
+                                break;
 //                                case R.id.aboutUs:
 //                                    jumpIntent = new Intent(context, AppAutoRun.class);
 //                                    startActivity(jumpIntent);
 //                                    break;
-                            }
                         }
+                    }
 
-                        @Override
-                        public void onFailure(Call<RestResult<Object>> call, Throwable t) {
-                            System.out.println("accessToken 校验失败");
-                            new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(1000);
-                                        Intent intent = new Intent(mContext, LoginActivity.class);
-                                        startActivity(intent);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+                    @Override
+                    public void onFailure(Call<RestResult<Object>> call, Throwable t) {
+                        System.out.println("accessToken 校验失败");
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(1000);
+                                    Intent intent = new Intent(context, LoginActivity.class);
+                                    startActivity(intent);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                            }.run();
-                        }
-                    });
-                    return;
-                }
-
-
+                            }
+                        }.run();
+                    }
+                });
+                return;
             }
         };
 
