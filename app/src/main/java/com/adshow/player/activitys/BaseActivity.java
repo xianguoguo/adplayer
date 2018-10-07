@@ -2,29 +2,19 @@ package com.adshow.player.activitys;
 
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.adshow.player.activitys.schedule.ScreenOffAdminReceiver;
-import com.adshow.player.bean.DeviceInfo;
-import com.adshow.player.bean.UserToken;
-import com.adshow.player.bean.status.RunningStatus;
+import com.adshow.player.bean.mqtt.RunningStatus;
 import com.adshow.player.service.ADPlayerBackendService;
 import com.adshow.player.service.MQTTManager;
-import com.adshow.player.service.response.RestResult;
-import com.adshow.player.util.DeviceUtil;
 import com.google.gson.Gson;
 
 import java.util.Date;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public abstract class BaseActivity extends AppCompatActivity {
 

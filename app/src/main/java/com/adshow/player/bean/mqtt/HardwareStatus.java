@@ -1,4 +1,4 @@
-package com.adshow.player.bean.status;
+package com.adshow.player.bean.mqtt;
 
 
 public class HardwareStatus extends DeviceReportStatus {

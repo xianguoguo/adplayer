@@ -1,4 +1,4 @@
-package com.adshow.player.bean.status;
+package com.adshow.player.bean.mqtt;
 
 import java.util.Date;
 

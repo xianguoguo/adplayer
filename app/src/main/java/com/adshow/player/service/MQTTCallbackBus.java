@@ -8,6 +8,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 
 public class MQTTCallbackBus implements MqttCallback {
+
     private static final String TAG = MQTTCallbackBus.class.getCanonicalName();
 
     @Override

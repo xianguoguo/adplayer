@@ -287,14 +287,17 @@ public class ADPlayerBackendService extends Service {
             Toast.makeText(getApplicationContext(), "没有设备管理权限", Toast.LENGTH_LONG);
         }
 
-        String uniqueId = DeviceUtil.getUniqueDeviceId(this.getApplicationContext());
-
-        MQTTManager.getInstance().connect(MQTTManager.URL, MQTTManager.userName, MQTTManager.password, MQTTManager.clientId);
-        //MQTTManager.getInstance().subscribe(TOPIC, 2);
-        MQTTManager.getInstance().publish(MQTTManager.PUB_TOPIC_RUNNING, 2, "running".getBytes());
+        initMQTT();
     }
 
 
+    public static final String TOPIC_PROGRAM_DEPLOY = "/s/dev/%s/deploy";
+
+    private void initMQTT(){
+        String uniqueId = DeviceUtil.getUniqueDeviceId(this.getApplicationContext());
+        MQTTManager.getInstance().connect(MQTTManager.URL, MQTTManager.userName, MQTTManager.password, MQTTManager.clientId);
+        MQTTManager.getInstance().subscribe(String.format(TOPIC_PROGRAM_DEPLOY, uniqueId), 2);
+    }
 
 
 
