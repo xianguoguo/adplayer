@@ -8,18 +8,22 @@ import org.greenrobot.greendao.annotation.NotNull;
 import java.util.Date;
 
 @Entity
-public class Schedule
-{
+public class Schedule {
     @Id
     private String id;
-    private Date scheduleTime;
+    private Long duration;
+    private Date beginDate;
+    private Date endDate;
     @NotNull
     private String advertisingId;
 
-    @Generated(hash = 2078719517)
-    public Schedule(String id, Date scheduleTime, @NotNull String advertisingId) {
+    @Generated(hash = 174751065)
+    public Schedule(String id, Long duration, Date beginDate, Date endDate,
+            @NotNull String advertisingId) {
         this.id = id;
-        this.scheduleTime = scheduleTime;
+        this.duration = duration;
+        this.beginDate = beginDate;
+        this.endDate = endDate;
         this.advertisingId = advertisingId;
     }
 
@@ -35,12 +39,20 @@ public class Schedule
         this.id = id;
     }
 
-    public Date getScheduleTime() {
-        return scheduleTime;
+    public Date getBeginDate() {
+        return beginDate;
     }
 
-    public void setScheduleTime(Date scheduleTime) {
-        this.scheduleTime = scheduleTime;
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public String getAdvertisingId() {
@@ -55,8 +67,17 @@ public class Schedule
     public String toString() {
         return "Schedule{" +
                 "id='" + id + '\'' +
-                ", scheduleTime=" + scheduleTime +
+                ", beginDate=" + beginDate +
+                ", endDate=" + endDate +
                 ", advertisingId='" + advertisingId + '\'' +
                 '}';
+    }
+
+    public Long getDuration() {
+        return this.duration;
+    }
+
+    public void setDuration(Long duration) {
+        this.duration = duration;
     }
 }

@@ -1,7 +1,7 @@
 package com.adshow.player.bean.mqtt;
 
 
-public class HardwareStatus extends DeviceReportStatus {
+public class HardwareStatus extends MQTTMessage {
 
     private String osVersion;
 

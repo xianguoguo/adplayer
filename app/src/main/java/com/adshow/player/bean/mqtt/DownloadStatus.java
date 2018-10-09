@@ -2,7 +2,7 @@ package com.adshow.player.bean.mqtt;
 
 import java.util.Date;
 
-public class DownloadStatus extends DeviceReportStatus {
+public class DownloadStatus extends MQTTMessage {
 
     private String programId;
 

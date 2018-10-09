@@ -28,8 +28,10 @@ public class ScheduleDao extends AbstractDao<Schedule, String> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, String.class, "id", true, "ID");
-        public final static Property ScheduleTime = new Property(1, java.util.Date.class, "scheduleTime", false, "SCHEDULE_TIME");
-        public final static Property AdvertisingId = new Property(2, String.class, "advertisingId", false, "ADVERTISING_ID");
+        public final static Property Duration = new Property(1, Long.class, "duration", false, "DURATION");
+        public final static Property BeginDate = new Property(2, java.util.Date.class, "beginDate", false, "BEGIN_DATE");
+        public final static Property EndDate = new Property(3, java.util.Date.class, "endDate", false, "END_DATE");
+        public final static Property AdvertisingId = new Property(4, String.class, "advertisingId", false, "ADVERTISING_ID");
     }
 
     private Query<Schedule> advertising_SchedulesQuery;
@@ -47,8 +49,10 @@ public class ScheduleDao extends AbstractDao<Schedule, String> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"SCHEDULE\" (" + //
                 "\"ID\" TEXT PRIMARY KEY NOT NULL ," + // 0: id
-                "\"SCHEDULE_TIME\" INTEGER," + // 1: scheduleTime
-                "\"ADVERTISING_ID\" TEXT NOT NULL );"); // 2: advertisingId
+                "\"DURATION\" INTEGER," + // 1: duration
+                "\"BEGIN_DATE\" INTEGER," + // 2: beginDate
+                "\"END_DATE\" INTEGER," + // 3: endDate
+                "\"ADVERTISING_ID\" TEXT NOT NULL );"); // 4: advertisingId
     }
 
     /** Drops the underlying database table. */
@@ -66,11 +70,21 @@ public class ScheduleDao extends AbstractDao<Schedule, String> {
             stmt.bindString(1, id);
         }
  
-        java.util.Date scheduleTime = entity.getScheduleTime();
-        if (scheduleTime != null) {
-            stmt.bindLong(2, scheduleTime.getTime());
+        Long duration = entity.getDuration();
+        if (duration != null) {
+            stmt.bindLong(2, duration);
         }
-        stmt.bindString(3, entity.getAdvertisingId());
+ 
+        java.util.Date beginDate = entity.getBeginDate();
+        if (beginDate != null) {
+            stmt.bindLong(3, beginDate.getTime());
+        }
+ 
+        java.util.Date endDate = entity.getEndDate();
+        if (endDate != null) {
+            stmt.bindLong(4, endDate.getTime());
+        }
+        stmt.bindString(5, entity.getAdvertisingId());
     }
 
     @Override
@@ -82,11 +96,21 @@ public class ScheduleDao extends AbstractDao<Schedule, String> {
             stmt.bindString(1, id);
         }
  
-        java.util.Date scheduleTime = entity.getScheduleTime();
-        if (scheduleTime != null) {
-            stmt.bindLong(2, scheduleTime.getTime());
+        Long duration = entity.getDuration();
+        if (duration != null) {
+            stmt.bindLong(2, duration);
         }
-        stmt.bindString(3, entity.getAdvertisingId());
+ 
+        java.util.Date beginDate = entity.getBeginDate();
+        if (beginDate != null) {
+            stmt.bindLong(3, beginDate.getTime());
+        }
+ 
+        java.util.Date endDate = entity.getEndDate();
+        if (endDate != null) {
+            stmt.bindLong(4, endDate.getTime());
+        }
+        stmt.bindString(5, entity.getAdvertisingId());
     }
 
     @Override
@@ -98,8 +122,10 @@ public class ScheduleDao extends AbstractDao<Schedule, String> {
     public Schedule readEntity(Cursor cursor, int offset) {
         Schedule entity = new Schedule( //
             cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : new java.util.Date(cursor.getLong(offset + 1)), // scheduleTime
-            cursor.getString(offset + 2) // advertisingId
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // duration
+            cursor.isNull(offset + 2) ? null : new java.util.Date(cursor.getLong(offset + 2)), // beginDate
+            cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // endDate
+            cursor.getString(offset + 4) // advertisingId
         );
         return entity;
     }
@@ -107,8 +133,10 @@ public class ScheduleDao extends AbstractDao<Schedule, String> {
     @Override
     public void readEntity(Cursor cursor, Schedule entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
-        entity.setScheduleTime(cursor.isNull(offset + 1) ? null : new java.util.Date(cursor.getLong(offset + 1)));
-        entity.setAdvertisingId(cursor.getString(offset + 2));
+        entity.setDuration(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setBeginDate(cursor.isNull(offset + 2) ? null : new java.util.Date(cursor.getLong(offset + 2)));
+        entity.setEndDate(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
+        entity.setAdvertisingId(cursor.getString(offset + 4));
      }
     
     @Override

@@ -2,7 +2,7 @@ package com.adshow.player.bean.mqtt;
 
 import java.util.Date;
 
-public class RunningStatus extends DeviceReportStatus {
+public class RunningStatus extends MQTTMessage {
 
     private Date bootTime;
 

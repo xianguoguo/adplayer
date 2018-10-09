@@ -8,6 +8,7 @@ import android.support.percent.PercentRelativeLayout;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adshow.player.R;
 import com.adshow.player.activitys.app.AppAutoRun;
@@ -90,12 +91,14 @@ public class MainActivity extends BaseActivity {
                         Intent jumpIntent;
                         switch (v.getId()) {
                             case R.id.playList:
-                                jumpIntent = new Intent(context, PlayTimelineActivity.class);
-                                startActivity(jumpIntent);
+                                Toast.makeText(context, "显示播放列表", Toast.LENGTH_SHORT).show();
+//                                jumpIntent = new Intent(context, PlayTimelineActivity.class);
+//                                startActivity(jumpIntent);
                                 break;
                             case R.id.downloadList:
-                                jumpIntent = new Intent(context, DownloadProcessActivity.class);
-                                startActivity(jumpIntent);
+                                Toast.makeText(context, "显示本地广告", Toast.LENGTH_SHORT).show();
+//                                jumpIntent = new Intent(context, DownloadProcessActivity.class);
+//                                startActivity(jumpIntent);
                                 break;
                             case R.id.play:
                                 jumpIntent = new Intent(context, PlayerActivity.class);

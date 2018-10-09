@@ -2,7 +2,7 @@ package com.adshow.player.bean.mqtt;
 
 import java.util.Date;
 
-public class ProgramDeploy {
+public class CMDDeploy extends MQTTMessage {
 
     private String programId;
 

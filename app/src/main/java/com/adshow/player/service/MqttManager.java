@@ -10,6 +10,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 
 public class MQTTManager {
+
     private static final String TAG = MQTTManager.class.getCanonicalName();
 
     public static final String URL = "tcp://192.168.1.4:1883";
@@ -46,7 +47,7 @@ public class MQTTManager {
     }
 
 
-    public static void release() {
+    public static void stop() {
         try {
             if (mInstance != null) {
                 mInstance.disConnect();
