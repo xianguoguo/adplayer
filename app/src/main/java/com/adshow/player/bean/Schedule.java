@@ -14,16 +14,18 @@ public class Schedule {
     private Long duration;
     private Date beginDate;
     private Date endDate;
+    private Long order;
     @NotNull
     private String advertisingId;
 
-    @Generated(hash = 174751065)
+    @Generated(hash = 172246409)
     public Schedule(String id, Long duration, Date beginDate, Date endDate,
-            @NotNull String advertisingId) {
+            Long order, @NotNull String advertisingId) {
         this.id = id;
         this.duration = duration;
         this.beginDate = beginDate;
         this.endDate = endDate;
+        this.order = order;
         this.advertisingId = advertisingId;
     }
 
@@ -79,5 +81,13 @@ public class Schedule {
 
     public void setDuration(Long duration) {
         this.duration = duration;
+    }
+
+    public Long getOrder() {
+        return this.order;
+    }
+
+    public void setOrder(Long order) {
+        this.order = order;
     }
 }

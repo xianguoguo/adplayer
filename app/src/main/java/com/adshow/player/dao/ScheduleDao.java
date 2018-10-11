@@ -31,7 +31,8 @@ public class ScheduleDao extends AbstractDao<Schedule, String> {
         public final static Property Duration = new Property(1, Long.class, "duration", false, "DURATION");
         public final static Property BeginDate = new Property(2, java.util.Date.class, "beginDate", false, "BEGIN_DATE");
         public final static Property EndDate = new Property(3, java.util.Date.class, "endDate", false, "END_DATE");
-        public final static Property AdvertisingId = new Property(4, String.class, "advertisingId", false, "ADVERTISING_ID");
+        public final static Property Order = new Property(4, Long.class, "order", false, "ORDER");
+        public final static Property AdvertisingId = new Property(5, String.class, "advertisingId", false, "ADVERTISING_ID");
     }
 
     private Query<Schedule> advertising_SchedulesQuery;
@@ -52,7 +53,8 @@ public class ScheduleDao extends AbstractDao<Schedule, String> {
                 "\"DURATION\" INTEGER," + // 1: duration
                 "\"BEGIN_DATE\" INTEGER," + // 2: beginDate
                 "\"END_DATE\" INTEGER," + // 3: endDate
-                "\"ADVERTISING_ID\" TEXT NOT NULL );"); // 4: advertisingId
+                "\"ORDER\" INTEGER," + // 4: order
+                "\"ADVERTISING_ID\" TEXT NOT NULL );"); // 5: advertisingId
     }
 
     /** Drops the underlying database table. */
@@ -84,7 +86,12 @@ public class ScheduleDao extends AbstractDao<Schedule, String> {
         if (endDate != null) {
             stmt.bindLong(4, endDate.getTime());
         }
-        stmt.bindString(5, entity.getAdvertisingId());
+ 
+        Long order = entity.getOrder();
+        if (order != null) {
+            stmt.bindLong(5, order);
+        }
+        stmt.bindString(6, entity.getAdvertisingId());
     }
 
     @Override
@@ -110,7 +117,12 @@ public class ScheduleDao extends AbstractDao<Schedule, String> {
         if (endDate != null) {
             stmt.bindLong(4, endDate.getTime());
         }
-        stmt.bindString(5, entity.getAdvertisingId());
+ 
+        Long order = entity.getOrder();
+        if (order != null) {
+            stmt.bindLong(5, order);
+        }
+        stmt.bindString(6, entity.getAdvertisingId());
     }
 
     @Override
@@ -125,7 +137,8 @@ public class ScheduleDao extends AbstractDao<Schedule, String> {
             cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // duration
             cursor.isNull(offset + 2) ? null : new java.util.Date(cursor.getLong(offset + 2)), // beginDate
             cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // endDate
-            cursor.getString(offset + 4) // advertisingId
+            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // order
+            cursor.getString(offset + 5) // advertisingId
         );
         return entity;
     }
@@ -136,7 +149,8 @@ public class ScheduleDao extends AbstractDao<Schedule, String> {
         entity.setDuration(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
         entity.setBeginDate(cursor.isNull(offset + 2) ? null : new java.util.Date(cursor.getLong(offset + 2)));
         entity.setEndDate(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
-        entity.setAdvertisingId(cursor.getString(offset + 4));
+        entity.setOrder(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
+        entity.setAdvertisingId(cursor.getString(offset + 5));
      }
     
     @Override

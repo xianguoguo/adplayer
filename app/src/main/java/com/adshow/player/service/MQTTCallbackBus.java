@@ -39,13 +39,15 @@ public class MQTTCallbackBus implements MqttCallback {
             schedule.setAdvertisingId(deploy.getProgramId());
             schedule.setBeginDate(deploy.getBeginDate());
             schedule.setEndDate(deploy.getEndDate());
-            DaoManager.getInstance().getDaoSession().getScheduleDao().insert(schedule);
+            schedule.setOrder(deploy.getOrder());
+            schedule.setDuration(deploy.getDuration());
+            DaoManager.getInstance().getDaoSession().getScheduleDao().insertOrReplace(schedule);
 
             Advertising advertising = new Advertising();
             advertising.setId(deploy.getProgramId());
             advertising.setName(deploy.getProgramId());
             advertising.setDescription("描述");
-            DaoManager.getInstance().getDaoSession().getAdvertisingDao().insert(advertising);
+            DaoManager.getInstance().getDaoSession().getAdvertisingDao().insertOrReplace(advertising);
 
             //下载
             DownloadManager.getInstance().download(deploy.getProgramId());

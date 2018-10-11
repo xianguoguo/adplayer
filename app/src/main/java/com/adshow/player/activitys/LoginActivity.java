@@ -117,6 +117,8 @@ public class LoginActivity extends BaseActivity {
                                     userLogin.setPassword(passwordEditText.getText().toString());
                                     DeviceUtil.setUserLogin(userLogin);
 
+                                    ADPlayerBackendService.getInstance().initAuthorizedService();
+
                                     new Runnable() {
                                         @Override
                                         public void run() {

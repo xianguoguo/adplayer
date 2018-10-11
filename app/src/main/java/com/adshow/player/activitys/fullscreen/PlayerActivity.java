@@ -8,7 +8,7 @@ import android.view.View;
 import com.adshow.player.R;
 import com.adshow.player.activitys.BaseActivity;
 import com.adshow.player.event.MyEvent;
-import com.adshow.player.event.PlayEvent;
+import com.adshow.player.event.PlayStartEvent;
 import com.adshow.player.util.AppUtils;
 import com.adshow.player.util.FileUtils;
 import com.adshow.player.widgets.DateTimeTextViewWrapper;
@@ -63,8 +63,8 @@ public class PlayerActivity extends BaseActivity {
 
 
     @Subscribe(threadMode = ThreadMode.MAIN, priority = 1)
-    public void onReceivePlayEvent(PlayEvent event) throws JSONException {
-        AppUtils.shoot(this);
+    public void onReceivePlayStartEvent(PlayStartEvent event) throws JSONException {
+        //AppUtils.shoot(this);
         Log.d("loadAdContent", "播放广告:" + event.advertisingPath);
         List<ADMaterial> materialList = FileUtils.readAdvertisingConfig(event.advertisingPath);
         addViewByConfig(savedInstanceState, materialList);

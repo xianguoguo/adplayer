@@ -14,10 +14,16 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.adshow.player.R;
+import com.adshow.player.activitys.LoginActivity;
+import com.adshow.player.activitys.app.AppAutoRun;
+import com.adshow.player.activitys.fullscreen.PlayerActivity;
 import com.adshow.player.activitys.schedule.ScreenOffAdminReceiver;
 import com.adshow.player.bean.DeviceInfo;
 import com.adshow.player.bean.UserToken;
 import com.adshow.player.event.MyEvent;
+import com.adshow.player.event.PlayEndEvent;
+import com.adshow.player.service.response.RestResult;
 import com.adshow.player.util.DeviceUtil;
 import com.adshow.player.util.SharedUtil;
 import com.google.gson.Gson;
@@ -33,12 +39,14 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ADPlayerBackendService extends Service {
     private static final String TAG = "ADPlayerBackendService";
-    private static final String SERVER_DEFAULT = "http://192.168.1.4:8089/";
+    private static final String SERVER_DEFAULT = "http://192.168.1.4:8089";
 
     private int totalCount;
 
@@ -98,7 +106,7 @@ public class ADPlayerBackendService extends Service {
                 .create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.4:8089/")
+                .baseUrl("http://192.168.1.4:8089")
                 //可以接收自定义的Gson，当然也可以不传
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(genericClient())
@@ -125,6 +133,12 @@ public class ADPlayerBackendService extends Service {
         if ("playerReady".equals(event.msg)) {
             SchedulerManager.getInstance().initScheduler();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING, priority = 1)
+    public void onReceivePlayEndEvent(PlayEndEvent event) {
+        Log.d(TAG, "准备播放下一个节目");
+        SchedulerManager.getInstance().playNext();
     }
 
 
@@ -175,8 +189,33 @@ public class ADPlayerBackendService extends Service {
             Toast.makeText(getApplicationContext(), "没有设备管理权限", Toast.LENGTH_LONG);
         }
 
-        initMQTTManager();
-        initDownloadManager();
+        initAuthorizedService();
+    }
+
+    public void initAuthorizedService(){
+        if (DeviceUtil.getUserToken() == null || TextUtils.isEmpty(DeviceUtil.getUserToken().getAccessToken())
+                || (DeviceUtil.getUserToken().getExpiresIn().getTime() - System.currentTimeMillis()) / (60 * 60 * 24 * 1000) < 7) {
+            return;
+        }
+
+        Call<RestResult<Object>> call = ADPlayerBackendService.getInstance().getRestApi().validateToken();
+        call.enqueue(new Callback<RestResult<Object>>() {
+            @Override
+            public void onResponse(Call<RestResult<Object>> call, retrofit2.Response<RestResult<Object>> response) {
+                if (!response.body().isSuccess()) {
+                    return;
+                }
+                initMQTTManager();
+                initDownloadManager();
+                System.out.println("accessToken 校验成功");
+            }
+
+            @Override
+            public void onFailure(Call<RestResult<Object>> call, Throwable t) {
+                System.out.println("accessToken 校验失败");
+            }
+        });
+
     }
 
 
@@ -190,9 +229,7 @@ public class ADPlayerBackendService extends Service {
 
 
     private void initDownloadManager() {
-        String uniqueId = DeviceUtil.getUniqueDeviceId(this.getApplicationContext());
-        MQTTManager.getInstance().connect(MQTTManager.URL, MQTTManager.userName, MQTTManager.password, MQTTManager.clientId);
-        MQTTManager.getInstance().subscribe(String.format(TOPIC_PROGRAM_DEPLOY, uniqueId), 2);
+        DownloadManager.getInstance();
     }
 
 

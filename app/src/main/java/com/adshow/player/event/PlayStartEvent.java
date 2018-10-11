@@ -1,8 +1,8 @@
 package com.adshow.player.event;
 
-public class PlayEvent {
+public class PlayStartEvent {
 
-    public PlayEvent(String advertisingPath) {
+    public PlayStartEvent(String advertisingPath) {
         this.advertisingPath = advertisingPath;
     }
 

@@ -12,6 +12,12 @@ public class CMDDeploy extends MQTTMessage {
 
     private Long duration;
 
+    private Long order;
+
+    public CMDDeploy() {
+        super.setType(MQTTMessage.SERVER_CMD_DEPLOY);
+    }
+
     public String getProgramId() {
         return programId;
     }
@@ -42,5 +48,13 @@ public class CMDDeploy extends MQTTMessage {
 
     public void setDuration(Long duration) {
         this.duration = duration;
+    }
+
+    public Long getOrder() {
+        return order;
+    }
+
+    public void setOrder(Long order) {
+        this.order = order;
     }
 }

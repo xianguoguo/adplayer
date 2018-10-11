@@ -23,7 +23,7 @@ public class DownloadManager {
 
     private static final String TAG = DownloadManager.class.getCanonicalName();
 
-    private static final String DOWNLOAD_URL = "s%/ad/program/download/s%.zip";
+    private static final String DOWNLOAD_URL = "%s/ad/program/download/%s.zip";
 
     private static final File bunchDir = new File("/sdcard", "Advertising");
 
